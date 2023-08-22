@@ -1,18 +1,16 @@
-﻿using RestaurantManagement.Domain.Common;
+﻿using MediatR;
+using RestaurantManagement.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestaurantManagement.Domain.Entities
+namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipe
 {
-    public class Recipe : AuditableEntity
+    public class CreateRecipeCommand : IRequest<int>
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         [MaxLength(50)]
         public string Name { get; set; } = string.Empty;

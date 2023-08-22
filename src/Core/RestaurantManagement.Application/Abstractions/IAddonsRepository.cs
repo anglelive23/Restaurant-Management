@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace RestaurantManagement.Application.Abstractions
 {
-    public interface IAddonsRepository : IAsyncRepository<Addons>
+    public interface IAddonsRepository : IAsyncRepository<Addon>
     {
         #region POST
-        Task<Addons?> AddAddonsAsync(Addons addons);
+        Task<Addon?> AddAddonsAsync(Addon addons);
         #endregion
 
         #region PUT
-        Task<Addons?> UpdateAddonsAsync(int id, Addons addons);
+        Task<Addon?> UpdateAddonsAsync(int id, Addon addons);
         #endregion
     }
 }

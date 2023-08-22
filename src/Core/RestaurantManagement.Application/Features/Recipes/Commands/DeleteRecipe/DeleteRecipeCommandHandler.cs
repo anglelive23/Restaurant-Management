@@ -1,32 +1,31 @@
 ﻿using MediatR;
 using RestaurantManagement.Application.Abstractions;
-using RestaurantManagement.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestaurantManagement.Application.Features.Recipes
+namespace RestaurantManagement.Application.Features.Recipes.Commands.DeleteRecipe
 {
-    internal class GetRecipeDetailsQueryHandler : IRequestHandler<GetRecipeDetailsQuery, Recipe>
+    public class DeleteRecipeCommandHandler : IRequestHandler<DeleteRecipeCommand, bool>
     {
         #region Fields and Properties
         private readonly IRecipeRepository _repo;
         #endregion
 
         #region Constructors
-        public GetRecipeDetailsQueryHandler(IRecipeRepository repo)
+        public DeleteRecipeCommandHandler(IRecipeRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
         #endregion
 
         #region Interface Implementation
-        public async Task<Recipe> Handle(GetRecipeDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteRecipeCommand request, CancellationToken cancellationToken)
         {
-            var recipe = await _repo.GetByIdAsync(request.Id);
-            return recipe != null ? recipe : new Recipe { };
+            var checkDelete = await _repo.RemoveAsync(request.Id);
+            return checkDelete;
         }
         #endregion
     }
