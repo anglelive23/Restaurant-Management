@@ -15,5 +15,7 @@ Infrastructure Layer: The Infrastructure layer deals with external concerns, suc
 ## Technologies Used
 
 ASP.NET Core: Powering the backend application and API endpoints.
+
 Entity Framework Core: For database interactions and data modeling.
+
 Swagger: Generating API documentation for easy integration.
