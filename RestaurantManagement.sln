@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{6A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantManagement.API", "src\External\RestaurantManagement.API\RestaurantManagement.API.csproj", "{A30DEAA5-2BF1-437A-B6BD-7E2DB0FB8341}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantManagement.Application", "RestaurantManagement.Application\RestaurantManagement.Application.csproj", "{CB5F169B-B2A5-40B6-8040-6A00CAE11E31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantManagement.Application", "src\Core\RestaurantManagement.Application\RestaurantManagement.Application.csproj", "{CB5F169B-B2A5-40B6-8040-6A00CAE11E31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
