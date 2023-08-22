@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MediatR;
 using RestaurantManagement.Application.Abstractions;
+using RestaurantManagement.Application.Exceptions;
 using RestaurantManagement.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipe
 {
-    public class CreateRecipeCommandHandler : IRequestHandler<CreateRecipeCommand, int>
+    public class CreateRecipeCommandHandler : IRequestHandler<CreateRecipeCommand, Recipe?>
     {
         #region Fields and Properties
         private readonly IRecipeRepository _repo;
@@ -24,12 +25,18 @@ namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecip
         #endregion
 
         #region Interface Implementation
-        public async Task<int> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
+        public async Task<Recipe?> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
         {
-            var @recipe = request.Adapt<Recipe>();
+            var validator = new CreateRecipeCommandValidator();
+            var validatorResult = await validator.ValidateAsync(request);
+
+            if (validatorResult.Errors.Count > 0)
+                throw new ValidationException(validatorResult);
+
+            var recipe = request.Adapt<Recipe>();
             recipe = await _repo.AddRecipeAsync(recipe);
 
-            return recipe != null ? recipe.Id : 0;
+            return recipe;
         }
         #endregion
     }
