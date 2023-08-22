@@ -9,18 +9,11 @@ using System.Threading.Tasks;
 
 namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipe
 {
-    public class CreateRecipeCommand : IRequest<int>
+    public class CreateRecipeCommand : IRequest<Recipe?>
     {
-        [Required]
-        [MaxLength(50)]
         public string Name { get; set; } = string.Empty;
-        [Required]
-        [MaxLength(250)]
         public string Description { get; set; } = string.Empty;
-        [Required]
-        //[Precision(18, 2)]
         public decimal InitialPrice { get; set; }
-        [Range(0, 5)]
         public int? Rate { get; set; }
         public int? Discount { get; set; }
         public Image? Image { get; set; }
