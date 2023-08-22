@@ -10,14 +10,10 @@ namespace RestaurantManagement.Domain.Entities
 {
     public class Size : AuditableEntity
     {
-        [Key]
         public int Id { get; set; }
-        [Required]
-        [MaxLength(50)]
-        public string Name { get; set; } = string.Empty;
-        [Required]
-        //[Precision(18, 2)]
+        public string Name { get; set; }
         public decimal Price { get; set; }
         public Recipe? Recipe { get; set; }
+        public int RecipeId { get; set; }
     }
 }
