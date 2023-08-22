@@ -1,4 +1,5 @@
-﻿using RestaurantManagement.Domain.Entities;
+﻿using Microsoft.AspNetCore.OData.Deltas;
+using RestaurantManagement.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,10 @@ namespace RestaurantManagement.Application.Abstractions
 
         #region PUT
         Task<Recipe?> UpdateRecipeAsync(int id, Recipe recipe);
+        #endregion
+
+        #region Patch
+        Task<Recipe?> PartUpdateRecipeAsync(int id, Delta<Recipe> recipe);
         #endregion
     }
 }
