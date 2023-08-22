@@ -10,7 +10,7 @@ namespace RestaurantManagement.Application.Abstractions
     public interface IAsyncRepository<T> where T : class
     {
         #region GET
-        IQueryable<T> GetAllAsync(Expression<Func<T, bool>>? predicate = null);
+        IQueryable<T> GetAll(Expression<Func<T, bool>>? predicate = null);
         Task<T?> GetByIdAsync(int id);
         #endregion
 

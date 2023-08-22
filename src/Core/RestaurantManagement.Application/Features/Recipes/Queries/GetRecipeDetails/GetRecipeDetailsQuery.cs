@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestaurantManagement.Application.Features.Recipes
+namespace RestaurantManagement.Application.Features.Recipes.Queries.GetRecipeDetails
 {
-    public class GetRecipeDetailsQuery : IRequest<Recipe>
+    public class GetRecipeDetailsQuery : IRequest<Recipe?>
     {
         public int Id { get; set; }
     }

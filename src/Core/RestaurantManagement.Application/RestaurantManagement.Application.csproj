@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
@@ -7,11 +7,20 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Mapster" Version="7.3.0" />
 		<PackageReference Include="MediatR" Version="12.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\RestaurantManagement.Domain\RestaurantManagement.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Features\Addons\Commands\" />
+		<Folder Include="Features\Categories\Commands\" />
+		<Folder Include="Features\Categories\Queries\" />
+		<Folder Include="Features\Sales\Commands\" />
+		<Folder Include="Features\Sales\Queries\" />
 	</ItemGroup>
 
 </Project>

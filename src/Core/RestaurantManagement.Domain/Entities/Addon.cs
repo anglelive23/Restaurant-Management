@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantManagement.Domain.Entities
 {
-    public class Addons : AuditableEntity
+    public class Addon : AuditableEntity
     {
         [Key]
         public int Id { get; set; }
