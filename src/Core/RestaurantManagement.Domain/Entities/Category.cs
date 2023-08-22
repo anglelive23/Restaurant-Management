@@ -11,14 +11,10 @@ namespace RestaurantManagement.Domain.Entities
 {
     public class Category : AuditableEntity
     {
-        [Key]
         public int Id { get; set; }
-        [Required]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
         public Image? Image { get; set; }
         public int? ImageId { get; set; }
-        public Company? Company { get; set; }
-        public int? CompanyId { get; set; }
         public List<Recipe>? Recipes { get; set; }
     }
 }

@@ -10,10 +10,7 @@ namespace RestaurantManagement.Domain.Entities
 {
     public class Status : AuditableEntity
     {
-        [Key]
         public int Id { get; set; }
-        [Required]
-        [MaxLength(25)]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
     }
 }

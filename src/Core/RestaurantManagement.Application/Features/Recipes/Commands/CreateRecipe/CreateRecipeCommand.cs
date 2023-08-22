@@ -23,7 +23,5 @@ namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecip
         public Category? Category { get; set; }
         public int? CategoryId { get; set; }
         public bool IsOffer { get; set; } = false;
-        public Company? Company { get; set; }
-        public int? CompanyId { get; set; }
     }
 }

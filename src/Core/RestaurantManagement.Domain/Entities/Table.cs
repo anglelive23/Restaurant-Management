@@ -11,10 +11,7 @@ namespace RestaurantManagement.Domain.Entities
     public class Table : AuditableEntity
     {
         public int Id { get; set; }
-        [Required]
-        [MaxLength(25)]
-        public string Name { get; set; } = string.Empty;
-        [Required]
+        public string Name { get; set; }
         public int TableNumber { get; set; }
     }
 }
