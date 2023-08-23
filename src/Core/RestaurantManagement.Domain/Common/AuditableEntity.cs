@@ -12,7 +12,7 @@ namespace RestaurantManagement.Domain.Common
         public DateTime CreatedDate { get; set; }
         public string? LastModifiedBy { get; set; }
         public DateTime? LastModifiedDate { get; set; }
-        public bool IsDeleted { get; set; } = false;
-        public bool IsActive { get; set; } = true;
+        public bool? IsDeleted { get; set; }
+        public bool? IsActive { get; set; }
     }
 }

@@ -21,6 +21,12 @@ namespace RestaurantManagement.Infrastructure.Configurations
 
             builder.Property(t => t.TableNumber)
                 .IsRequired();
+
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.IsDeleted)
+               .HasDefaultValue(false);
         }
     }
 }

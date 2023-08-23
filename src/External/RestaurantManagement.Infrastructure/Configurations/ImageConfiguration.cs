@@ -18,6 +18,12 @@ namespace RestaurantManagement.Infrastructure.Configurations
             builder.Property(i => i.Description)
                 .IsRequired()
                 .HasMaxLength(25);
+
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.IsDeleted)
+               .HasDefaultValue(false);
         }
     }
 }

@@ -18,6 +18,12 @@ namespace RestaurantManagement.Infrastructure.Configurations
             builder.Property(s => s.SalesPrice)
                 .IsRequired()
                 .HasPrecision(18, 2);
+
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.IsDeleted)
+               .HasDefaultValue(false);
         }
     }
 }
