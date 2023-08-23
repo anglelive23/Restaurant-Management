@@ -17,6 +17,7 @@ namespace RestaurantManagement.API
             {
                 //options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromMinutes(10)));
                 options.AddPolicy("Addons", policy => policy.Tag("Addons").Expire(TimeSpan.FromHours(1)));
+                options.AddPolicy("Addon", policy => policy.Tag("Addons").SetVaryByQuery("key").Expire(TimeSpan.FromHours(1)));
 
             });
 

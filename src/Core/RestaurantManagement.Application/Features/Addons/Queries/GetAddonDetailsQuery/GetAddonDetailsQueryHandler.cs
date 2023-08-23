@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using RestaurantManagement.Application.Abstractions;
+using RestaurantManagement.Application.Exceptions;
 using RestaurantManagement.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantManagement.Application.Features.Addons.Queries.GetAddonDetailsQuery
 {
-    public class GetAddonDetailsQueryHandler : IRequestHandler<GetAddonDetailsQuery, Addon?>
+    public class GetAddonDetailsQueryHandler : IRequestHandler<GetAddonDetailsQuery, IQueryable<Addon>?>
     {
         #region Fields and Properties
         private readonly IAddonsRepository _repo;
@@ -23,10 +24,16 @@ namespace RestaurantManagement.Application.Features.Addons.Queries.GetAddonDetai
         #endregion
 
         #region Interface Implementation
-        public async Task<Addon?> Handle(GetAddonDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<IQueryable<Addon>?> Handle(GetAddonDetailsQuery request, CancellationToken cancellationToken)
         {
-            var addon = await _repo.GetByIdAsync(request.Id);
-            return addon;
+            var validator = new GetAddonDetailsQueryValidator();
+            var validatorResult = await validator.ValidateAsync(request, cancellationToken);
+
+            if (validatorResult.Errors.Count > 0)
+                throw new ValidationException(validatorResult);
+
+            var addon = _repo.GetAll(a => a.Id == request.Id && a.IsDeleted == false);
+            return await Task.FromResult(addon);
         }
         #endregion
     }

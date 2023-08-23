@@ -51,6 +51,8 @@ namespace RestaurantManagement.Infrastructure.Repositories
                     return null;
 
                 addons.Id = currentAddon.Id;
+                addons.IsActive = currentAddon.IsActive;
+                addons.IsDeleted = currentAddon.IsDeleted;
                 _context.Entry(currentAddon).CurrentValues.SetValues(addons);
                 _context.Update(currentAddon);
                 await _context.SaveChangesAsync();
@@ -77,7 +79,11 @@ namespace RestaurantManagement.Infrastructure.Repositories
                 if (addon == null)
                     return false;
 
+                if (addon.IsDeleted == true)
+                    return true;
+
                 addon.IsDeleted = true;
+                addon.LastModifiedDate = DateTime.UtcNow;
                 _context.Update(addon);
 
                 return _context.SaveChanges() > 0;
