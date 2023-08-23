@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.OutputCaching;
 using RestaurantManagement.Application.Exceptions;
 using RestaurantManagement.Application.Features.Addons.Queries.GetAddonsListQuery;
@@ -8,9 +10,8 @@ using Serilog;
 
 namespace RestaurantManagement.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AddonsController : ControllerBase
+    [Route("api/odata")]
+    public class AddonsController : ODataController
     {
         #region Fields and Properties
         private readonly IMediator _mediator;
@@ -24,8 +25,9 @@ namespace RestaurantManagement.API.Controllers
         #endregion
 
         #region GET
-        [HttpGet]
+        [HttpGet("addons")]
         [OutputCache(PolicyName = "Addons")]
+        [EnableQuery(MaxExpansionDepth = 3, PageSize = 1000)]
         public async Task<IActionResult> GetAllAddons()
         {
             try
