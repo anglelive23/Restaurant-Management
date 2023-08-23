@@ -16,5 +16,13 @@ namespace RestaurantManagement.Application.Abstractions
         #region PUT
         Task<Addon?> UpdateAddonsAsync(int id, Addon addons);
         #endregion
+
+        #region DELETE
+        Task<bool> RemoveAddonAsync(int id);
+        #endregion
+
+        #region Helpers
+        bool IsExistingAddon(string name);
+        #endregion
     }
 }

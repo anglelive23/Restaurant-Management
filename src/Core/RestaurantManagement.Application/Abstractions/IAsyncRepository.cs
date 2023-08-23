@@ -15,7 +15,7 @@ namespace RestaurantManagement.Application.Abstractions
         #endregion
 
         #region DELETE
-        Task<bool> RemoveAsync(int id);
+        //Task<bool> RemoveAsync(int id);
         #endregion
     }
 }

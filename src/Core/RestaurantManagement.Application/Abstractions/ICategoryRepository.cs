@@ -16,5 +16,13 @@ namespace RestaurantManagement.Application.Abstractions
         #region PUT
         Task<Category?> UpdateCategoryAsync(int id, Category category);
         #endregion
+
+        #region DELETE
+        Task<bool> RemoveCategoryAsync(int id);
+        #endregion
+
+        #region Helpers
+        bool IsExistingCateogry(string name);
+        #endregion
     }
 }
