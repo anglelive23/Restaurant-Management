@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace RestaurantManagement.Infrastructure
 {
-    public static class InfrastructureServiceRegisteration
+    public static class InfrastructureServiceRegistration
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
