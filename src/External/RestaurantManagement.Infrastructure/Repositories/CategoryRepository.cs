@@ -77,7 +77,11 @@ namespace RestaurantManagement.Infrastructure.Repositories
                 if (category == null)
                     return false;
 
+                if (category.IsDeleted == true)
+                    return true;
+
                 category.IsDeleted = true;
+                category.LastModifiedDate = DateTime.UtcNow;
                 _context.Update(category);
 
                 return _context.SaveChanges() > 0;

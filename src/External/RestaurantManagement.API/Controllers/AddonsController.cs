@@ -2,10 +2,16 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.OutputCaching;
 using RestaurantManagement.Application.Exceptions;
+using RestaurantManagement.Application.Features.Addons.Commands.CreateAddon;
+using RestaurantManagement.Application.Features.Addons.Commands.DeleteAddon;
+using RestaurantManagement.Application.Features.Addons.Commands.UpdateAddon;
+using RestaurantManagement.Application.Features.Addons.Queries.GetAddonDetailsQuery;
 using RestaurantManagement.Application.Features.Addons.Queries.GetAddonsListQuery;
+using RestaurantManagement.Domain.Entities;
 using Serilog;
 
 namespace RestaurantManagement.API.Controllers
@@ -33,11 +39,125 @@ namespace RestaurantManagement.API.Controllers
             try
             {
                 Log.Information("Starting controller Addons action GetAllAddons.");
-                var addons = await _mediator.Send(new GetAddonsListQuery());
+                var addons = await _mediator
+                    .Send(new GetAddonsListQuery());
                 Log.Information("Returning all Addons to the caller.");
                 return Ok(addons);
             }
             catch (Exception ex) when (ex is DataFailureException
+                                    || ex is ValidationException
+                                    || ex is Exception)
+            {
+                Log.Error($"{ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("addons({key})")]
+        [OutputCache(PolicyName = "Addon")]
+        [EnableQuery(MaxExpansionDepth = 3)]
+        public async Task<IActionResult> GetAddonById(int key)
+        {
+            try
+            {
+                Log.Information("Starting controller Addons action GetAddonById.");
+                var addon = await _mediator
+                    .Send(new GetAddonDetailsQuery { Id = key });
+                Log.Information("Returning Artist data to the caller.");
+                return Ok(SingleResult.Create(addon));
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is InvalidOperationException
+                                    || ex is Exception)
+            {
+                Log.Error($"{ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion
+
+        #region Post
+        [HttpPost("addons")]
+        public async Task<IActionResult> AddAddon([FromBody] CreateAddonCommand createAddonCommand, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Log.Information("Starting controller Addons action AddAddon.");
+                var addon = await _mediator
+                    .Send(createAddonCommand);
+
+                if (addon is null)
+                    return BadRequest("Addon already exists with same Name!");
+
+                #region Cache Evict
+                await cache.EvictByTagAsync("Addons", cancellationToken);
+                #endregion
+
+                Log.Information("Addon has been added.");
+                return Created(addon);
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is ValidationException
+                                    || ex is Exception)
+            {
+                Log.Error($"{ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion
+
+        #region Put
+        [HttpPut("addons({key})")]
+        public async Task<IActionResult> UpdateAddon(int key, [FromBody] UpdateAddonCommand updateAddonCommand, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Log.Information("Starting controller Addons action UpdateAddon.");
+                var currentAddon = await _mediator
+                    .Send(updateAddonCommand);
+
+                if (currentAddon == null)
+                    return NotFound("Addon not found!");
+
+                #region Cache Evict
+                await cache.EvictByTagAsync("Addons", cancellationToken);
+                #endregion
+
+                Log.Information($"Addon with id: {key} has been updated.");
+                return NoContent();
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is Exception)
+            {
+                Log.Error($"{ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion
+
+        #region DELETE
+        [HttpDelete("addons({key})")]
+        public async Task<IActionResult> RemoveAddon(int key, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Log.Information("Starting controller Addons action RemoveAddon.");
+
+                var currentAddon = await _mediator
+                    .Send(new DeleteAddonCommand { Id = key });
+
+                if (currentAddon is false)
+                    return NotFound("Addon not found!");
+
+                #region Cache Evict
+                await cache.EvictByTagAsync("Addons", cancellationToken);
+                #endregion
+
+                Log.Information($"Addon with id: {key} has been marked as deleted.");
+                return NoContent();
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is ValidationException
                                     || ex is Exception)
             {
                 Log.Error($"{ex.Message}");

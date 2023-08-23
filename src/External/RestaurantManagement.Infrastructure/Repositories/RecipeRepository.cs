@@ -104,7 +104,11 @@ namespace RestaurantManagement.Infrastructure.Repositories
                 if (recipe == null)
                     return false;
 
+                if (recipe.IsDeleted == true)
+                    return true;
+
                 recipe.IsDeleted = true;
+                recipe.LastModifiedDate = DateTime.UtcNow;
                 _context.Update(recipe);
 
                 return _context.SaveChanges() > 0;
