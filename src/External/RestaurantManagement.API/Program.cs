@@ -1,9 +1,14 @@
+using Microsoft.AspNetCore.OData;
 using RestaurantManagement.API;
 using RestaurantManagement.Application;
+using RestaurantManagement.Application.Models;
 using RestaurantManagement.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddOData(options =>
+{
+    options.AddRouteComponents("api/odata", new RestaurantEntityDataModel().GetEntityDataModel()).Select().Filter().OrderBy().Expand().SetMaxTop(1000);
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
