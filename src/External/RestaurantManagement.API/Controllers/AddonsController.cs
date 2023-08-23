@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using RestaurantManagement.Application.Exceptions;
 using RestaurantManagement.Application.Features.Addons.Queries.GetAddonsListQuery;
 using Serilog;
@@ -24,6 +25,7 @@ namespace RestaurantManagement.API.Controllers
 
         #region GET
         [HttpGet]
+        [OutputCache(PolicyName = "Addons")]
         public async Task<IActionResult> GetAllAddons()
         {
             try
