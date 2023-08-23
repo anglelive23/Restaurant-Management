@@ -22,8 +22,12 @@ namespace RestaurantManagement.Application.Abstractions
         Task<Recipe?> PartUpdateRecipeAsync(int id, Delta<Recipe> recipe);
         #endregion
 
+        #region DELETE
+        Task<bool> RemoveRecipeAsync(int id);
+        #endregion
+
         #region Helpers
-        Task<bool> IsUniqueRecipe(string name);
+        bool IsUniqueRecipe(string name);
         #endregion
     }
 }
