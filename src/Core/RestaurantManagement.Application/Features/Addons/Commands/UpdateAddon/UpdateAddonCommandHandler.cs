@@ -1,16 +1,4 @@
-﻿using Mapster;
-using MediatR;
-using RestaurantManagement.Application.Abstractions;
-using RestaurantManagement.Application.Exceptions;
-using RestaurantManagement.Application.Features.Addons.Commands.DeleteAddon;
-using RestaurantManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RestaurantManagement.Application.Features.Addons.Commands.UpdateAddon
+﻿namespace RestaurantManagement.Application.Features.Addons.Commands.UpdateAddon
 {
     public class UpdateAddonCommandHandler : IRequestHandler<UpdateAddonCommand, Addon?>
     {
@@ -32,7 +20,7 @@ namespace RestaurantManagement.Application.Features.Addons.Commands.UpdateAddon
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (validationResult.Errors.Count > 0)
-                throw new ValidationException(validationResult);
+                throw new Exceptions.ValidationException(validationResult);
 
             try
             {

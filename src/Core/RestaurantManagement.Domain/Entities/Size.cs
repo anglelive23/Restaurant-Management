@@ -1,19 +1,10 @@
-﻿using RestaurantManagement.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RestaurantManagement.Domain.Entities;
 
-namespace RestaurantManagement.Domain.Entities
+public class Size : AuditableEntity
 {
-    public class Size : AuditableEntity
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public Recipe? Recipe { get; set; }
-        public int RecipeId { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public Recipe? Recipe { get; set; }
+    public int RecipeId { get; set; }
 }

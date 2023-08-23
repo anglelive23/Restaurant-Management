@@ -1,15 +1,4 @@
-﻿using Mapster;
-using MediatR;
-using RestaurantManagement.Application.Abstractions;
-using RestaurantManagement.Application.Exceptions;
-using RestaurantManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipe
+﻿namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipe
 {
     public class CreateRecipeCommandHandler : IRequestHandler<CreateRecipeCommand, Recipe?>
     {
@@ -31,7 +20,7 @@ namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecip
             var validatorResult = await validator.ValidateAsync(request);
 
             if (validatorResult.Errors.Count > 0)
-                throw new ValidationException(validatorResult);
+                throw new Exceptions.ValidationException(validatorResult);
 
             var recipe = request.Adapt<Recipe>();
             recipe = await _repo.AddRecipeAsync(recipe);

@@ -1,20 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Results;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.AspNetCore.OutputCaching;
-using RestaurantManagement.Application.Exceptions;
-using RestaurantManagement.Application.Features.Addons.Commands.CreateAddon;
-using RestaurantManagement.Application.Features.Addons.Commands.DeleteAddon;
-using RestaurantManagement.Application.Features.Addons.Commands.UpdateAddon;
-using RestaurantManagement.Application.Features.Addons.Queries.GetAddonDetailsQuery;
-using RestaurantManagement.Application.Features.Addons.Queries.GetAddonsListQuery;
-using RestaurantManagement.Domain.Entities;
-using Serilog;
-
-namespace RestaurantManagement.API.Controllers
+﻿namespace RestaurantManagement.API.Controllers
 {
     [Route("api/odata")]
     public class AddonsController : ODataController
@@ -26,7 +10,7 @@ namespace RestaurantManagement.API.Controllers
         #region Constructors
         public AddonsController(IMediator mediator)
         {
-            _mediator = mediator;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         #endregion
 

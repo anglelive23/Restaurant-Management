@@ -1,11 +1,4 @@
-﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RestaurantManagement.Application.Features.Addons.Commands.CreateAddon
+﻿namespace RestaurantManagement.Application.Features.Addons.Commands.CreateAddon
 {
     public class CreateAddonCommandValidator : AbstractValidator<CreateAddonCommand>
     {

@@ -1,0 +1,12 @@
+﻿global using System.Linq.Expressions;
+global using Microsoft.Data.SqlClient;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.OData.Deltas;
+global using RestaurantManagement.Domain.Common;
+global using Microsoft.Extensions.Configuration;
+global using RestaurantManagement.Domain.Entities;
+global using Microsoft.Extensions.DependencyInjection;
+global using RestaurantManagement.Application.Exceptions;
+global using RestaurantManagement.Application.Abstractions;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using RestaurantManagement.Infrastructure.Repositories;

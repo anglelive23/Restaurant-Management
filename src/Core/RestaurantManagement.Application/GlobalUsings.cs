@@ -1,0 +1,12 @@
+﻿global using MediatR;
+global using Mapster;
+global using System.Text;
+global using FluentValidation;
+global using System.Reflection;
+global using System.Linq.Expressions;
+global using FluentValidation.Results;
+global using Microsoft.AspNetCore.OData.Deltas;
+global using RestaurantManagement.Domain.Entities;
+global using Microsoft.Extensions.DependencyInjection;
+global using RestaurantManagement.Application.Exceptions;
+global using RestaurantManagement.Application.Abstractions;

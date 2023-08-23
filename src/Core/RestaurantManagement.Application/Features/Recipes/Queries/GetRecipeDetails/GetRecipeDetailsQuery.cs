@@ -1,12 +1,4 @@
-﻿using MediatR;
-using RestaurantManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RestaurantManagement.Application.Features.Recipes.Queries.GetRecipeDetails
+﻿namespace RestaurantManagement.Application.Features.Recipes.Queries.GetRecipeDetails
 {
     public class GetRecipeDetailsQuery : IRequest<Recipe?>
     {

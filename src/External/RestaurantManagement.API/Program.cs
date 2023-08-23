@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.OData;
-using RestaurantManagement.API;
-using RestaurantManagement.Application;
-using RestaurantManagement.Application.Models;
-using RestaurantManagement.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddOData(options =>

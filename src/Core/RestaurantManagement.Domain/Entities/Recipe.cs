@@ -1,28 +1,18 @@
-﻿using RestaurantManagement.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RestaurantManagement.Domain.Entities;
 
-namespace RestaurantManagement.Domain.Entities
+public class Recipe : AuditableEntity
 {
-    public class Recipe : AuditableEntity
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public decimal InitialPrice { get; set; }
-        public int? Rate { get; set; }
-        public int? Discount { get; set; }
-        public Image? Image { get; set; }
-        public int? ImageId { get; set; }
-        public List<Size>? Sizes { get; set; }
-        public List<Addon>? Addons { get; set; }
-        public Category? Category { get; set; }
-        public int? CategoryId { get; set; }
-        public bool IsOffer { get; set; } = false;
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public decimal InitialPrice { get; set; }
+    public int? Rate { get; set; }
+    public int? Discount { get; set; }
+    public Image? Image { get; set; }
+    public int? ImageId { get; set; }
+    public List<Size>? Sizes { get; set; }
+    public List<Addon>? Addons { get; set; }
+    public Category? Category { get; set; }
+    public int? CategoryId { get; set; }
+    public bool IsOffer { get; set; } = false;
 }
