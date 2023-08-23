@@ -24,7 +24,7 @@ namespace RestaurantManagement.Application.Features.Recipes.Commands.DeleteRecip
         #region Interface Implementation
         public async Task<bool> Handle(DeleteRecipeCommand request, CancellationToken cancellationToken)
         {
-            var checkDelete = await _repo.RemoveAsync(request.Id);
+            var checkDelete = await _repo.RemoveRecipeAsync(request.Id);
             return checkDelete;
         }
         #endregion
