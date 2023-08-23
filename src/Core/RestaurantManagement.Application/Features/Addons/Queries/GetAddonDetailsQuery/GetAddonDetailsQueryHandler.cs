@@ -1,14 +1,4 @@
-﻿using MediatR;
-using RestaurantManagement.Application.Abstractions;
-using RestaurantManagement.Application.Exceptions;
-using RestaurantManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RestaurantManagement.Application.Features.Addons.Queries.GetAddonDetailsQuery
+﻿namespace RestaurantManagement.Application.Features.Addons.Queries.GetAddonDetailsQuery
 {
     public class GetAddonDetailsQueryHandler : IRequestHandler<GetAddonDetailsQuery, IQueryable<Addon>?>
     {
@@ -30,7 +20,7 @@ namespace RestaurantManagement.Application.Features.Addons.Queries.GetAddonDetai
             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (validatorResult.Errors.Count > 0)
-                throw new ValidationException(validatorResult);
+                throw new Exceptions.ValidationException(validatorResult);
 
             var addon = _repo.GetAll(a => a.Id == request.Id && a.IsDeleted == false);
             return await Task.FromResult(addon);

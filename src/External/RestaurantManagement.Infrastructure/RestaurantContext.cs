@@ -1,14 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RestaurantManagement.Domain.Common;
-using RestaurantManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RestaurantManagement.Infrastructure
+﻿namespace RestaurantManagement.Infrastructure
 {
     public class RestaurantContext : DbContext
     {
@@ -16,6 +6,7 @@ namespace RestaurantManagement.Infrastructure
         {
         }
 
+        #region DbSets
         public DbSet<Addon> Addons { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -28,6 +19,7 @@ namespace RestaurantManagement.Infrastructure
         public DbSet<Size> Sizes { get; set; }
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Table> Tables { get; set; }
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

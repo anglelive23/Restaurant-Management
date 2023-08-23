@@ -1,13 +1,4 @@
-﻿using FluentValidation;
-using RestaurantManagement.Application.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipe
+﻿namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipe
 {
     public class CreateRecipeCommandValidator : AbstractValidator<CreateRecipeCommand>
     {

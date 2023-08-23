@@ -1,13 +1,4 @@
-﻿using MediatR;
-using RestaurantManagement.Application.Abstractions;
-using RestaurantManagement.Application.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RestaurantManagement.Application.Features.Addons.Commands.DeleteAddon
+﻿namespace RestaurantManagement.Application.Features.Addons.Commands.DeleteAddon
 {
     public class DeleteAddonCommandHandler : IRequestHandler<DeleteAddonCommand, bool>
     {
@@ -29,7 +20,7 @@ namespace RestaurantManagement.Application.Features.Addons.Commands.DeleteAddon
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (validationResult.Errors.Count > 0)
-                throw new ValidationException(validationResult);
+                throw new Exceptions.ValidationException(validationResult);
 
             var checkDelete = await _repo.RemoveAddonAsync(request.Id);
 

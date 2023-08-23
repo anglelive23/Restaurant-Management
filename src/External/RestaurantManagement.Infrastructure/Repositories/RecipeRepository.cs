@@ -1,16 +1,4 @@
-﻿using Microsoft.AspNetCore.OData.Deltas;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using RestaurantManagement.Application.Abstractions;
-using RestaurantManagement.Application.Exceptions;
-using RestaurantManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RestaurantManagement.Infrastructure.Repositories
+﻿namespace RestaurantManagement.Infrastructure.Repositories
 {
     public class RecipeRepository : BaseRepository<Recipe>, IRecipeRepository
     {
