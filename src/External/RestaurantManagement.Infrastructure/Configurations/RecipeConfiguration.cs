@@ -28,8 +28,8 @@ namespace RestaurantManagement.Infrastructure.Configurations
                 .IsRequired()
                 .HasPrecision(18, 2);
 
-            builder.Property(x => x.Rate)
-                .HasAnnotation("Range", new RangeAttribute(0, 5));
+            //builder.Property(x => x.Rate)
+            //    .HasAnnotation("Range", new RangeAttribute(0, 5));
         }
     }
 }

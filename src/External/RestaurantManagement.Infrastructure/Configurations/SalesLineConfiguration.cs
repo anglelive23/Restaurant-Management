@@ -27,6 +27,12 @@ namespace RestaurantManagement.Infrastructure.Configurations
 
             builder.Property(s => s.Note)
                 .HasMaxLength(100);
+
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.IsDeleted)
+               .HasDefaultValue(false);
         }
     }
 }

@@ -34,6 +34,12 @@ namespace RestaurantManagement.Infrastructure.Configurations
 
             builder.Property(c => c.PhoneNo3)
                 .HasMaxLength(20);
+
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.IsDeleted)
+               .HasDefaultValue(false);
         }
     }
 }

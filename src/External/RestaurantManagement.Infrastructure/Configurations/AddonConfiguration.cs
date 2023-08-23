@@ -21,7 +21,14 @@ namespace RestaurantManagement.Infrastructure.Configurations
                 .HasMaxLength(50);
 
             builder.Property(x => x.Price)
-                .IsRequired();
+                .IsRequired()
+                .HasPrecision(18, 2);
+
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.IsDeleted)
+               .HasDefaultValue(false);
         }
     }
 }

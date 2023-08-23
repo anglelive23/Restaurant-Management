@@ -28,6 +28,12 @@ namespace RestaurantManagement.Infrastructure.Configurations
             builder.Property(a => a.AddressLine3)
                 .HasMaxLength(120)
                 .HasDefaultValue(string.Empty);
+
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.IsDeleted)
+               .HasDefaultValue(false);
         }
     }
 }
