@@ -4,7 +4,7 @@ Welcome to the Restaurant Management System repository based on the Clean Archit
 ## About the Project
 The Restaurant Management System is designed using the principles of Clean Architecture, which emphasizes separation of concerns, maintainability, and scalability. The architecture is divided into distinct layers, each with a specific responsibility:
 
-Presentation Layer: This layer includes the user interface components, such as the web application or mobile app. It interacts with the Application layer to provide a user-friendly interface for restaurant staff and customers.
+Presentation Layer: This layer includes the user interface components, such as the web application or mobile app. It interacts with the Application layer to provide a user-friendly interface for restaurant staff and customers, I'll be using ASP.NET Core Web API as presentation Layer In this case but since we are working using Clean Architecture we could add UI like Angular and it will work just perfect.
 
 Application Layer: The Application layer contains the use cases and business logic. It orchestrates the interactions between the Presentation and Domain layers, ensuring that business rules are followed and use cases are executed.
 
