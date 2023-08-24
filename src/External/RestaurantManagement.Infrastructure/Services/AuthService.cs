@@ -51,8 +51,8 @@
             var jwtSecurityToken = await CreateJwtToken(user);
             var refreshToken = GenerateRefreshToken();
 
-            // To-do fix refresh token not saving to database
-            user.RefreshTokens?.Add(refreshToken);
+            // To-do fix refresh token not saving to database -> Fixed
+            user.RefreshTokens.Add(refreshToken);
             await _userManager.UpdateAsync(user);
 
             // Returning the AuthModel containing the token created
@@ -72,12 +72,11 @@
 
         public async Task<AuthModel> LoginAsync(LoginModel model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            //var user = await _userManager
-            //    .Users
-            //    .Include(u => u.RefreshTokens)
-            //    .AsSplitQuery()
-            //    .FirstOrDefaultAsync(u => u.Email == model.Email);
+            var user = await _userManager
+                .Users
+                .Include(u => u.RefreshTokens.Where(r => r.RevokedOn == null && DateTime.UtcNow <= r.ExpiresOn))
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(u => u.Email == model.Email);
 
             if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
                 return new AuthModel { Message = "Email or password is incorrect!" };
@@ -126,7 +125,7 @@
                 var refreshToken = GenerateRefreshToken();
                 authModel.RefreshToken = refreshToken.Token;
                 authModel.RefreshTokenExpiration = refreshToken.ExpiresOn;
-                // To-do fix refresh token not saving to database
+                // To-do fix refresh token not saving to database -> Fixed
                 user.RefreshTokens.Add(refreshToken);
                 await _userManager.UpdateAsync(user);
             }

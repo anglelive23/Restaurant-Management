@@ -7,5 +7,10 @@
         public DateTime? CreatedDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public IList<RefreshToken>? RefreshTokens { get; set; }
+
+        public ApplicationUser()
+        {
+            RefreshTokens = new List<RefreshToken>();
+        }
     }
 }

@@ -5,7 +5,6 @@ namespace RestaurantManagement.Application.Models
 {
     public class RegisterModel
     {
-        [Required, MaxLength(20)]
         public string FirstName { get; set; }
         [Required, MaxLength(20)]
         public string LastName { get; set; }
@@ -18,6 +17,5 @@ namespace RestaurantManagement.Application.Models
         public string Password { get; set; }
         [Required, MaxLength(11)]
         public string PhoneNumber { get; set; }
-        public int? DepartmentId { get; set; }
     }
 }
