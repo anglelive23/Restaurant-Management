@@ -6,6 +6,7 @@ global using System.Reflection;
 global using Microsoft.OData.Edm;
 global using System.Linq.Expressions;
 global using FluentValidation.Results;
+global using Microsoft.AspNetCore.Http;
 global using Microsoft.OData.ModelBuilder;
 global using Microsoft.AspNetCore.OData.Deltas;
 global using RestaurantManagement.Domain.Common;

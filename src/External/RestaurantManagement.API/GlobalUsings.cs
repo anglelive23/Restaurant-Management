@@ -21,11 +21,12 @@ global using RestaurantManagement.Application.Features.Addons.Commands.CreateAdd
 global using RestaurantManagement.Application.Features.Addons.Commands.DeleteAddon;
 global using RestaurantManagement.Application.Features.Addons.Commands.UpdateAddon;
 global using RestaurantManagement.Application.Features.Authentications.Commands.Login;
+global using RestaurantManagement.Application.Features.Files.Command.SaveImageCommand;
 global using RestaurantManagement.Application.Features.Addresses.Commands.UpdateAddress;
+global using RestaurantManagement.Application.Features.Addresses.Commands.CreateAddress;
+global using RestaurantManagement.Application.Features.Addresses.Commands.DeleteAddress;
 global using RestaurantManagement.Application.Features.Authentications.Commands.Register;
 global using RestaurantManagement.Application.Features.Addons.Queries.GetAddonsListQuery;
 global using RestaurantManagement.Application.Features.Addons.Queries.GetAddonDetailsQuery;
 global using RestaurantManagement.Application.Features.Addresses.Queries.GetAddressesListQuery;
 global using RestaurantManagement.Application.Features.Addresses.Queries.GetAddressDetailsQuery;
-global using RestaurantManagement.Application.Features.Addresses.Commands.CreateAddress;
-global using RestaurantManagement.Application.Features.Addresses.Commands.DeleteAddress;

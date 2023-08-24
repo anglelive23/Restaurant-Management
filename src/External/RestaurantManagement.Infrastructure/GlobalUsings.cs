@@ -2,6 +2,7 @@
 global using System.Security.Claims;
 global using System.Linq.Expressions;
 global using Microsoft.Data.SqlClient;
+global using Microsoft.AspNetCore.Http;
 global using Microsoft.Extensions.Options;
 global using System.Security.Cryptography;
 global using Microsoft.AspNetCore.Identity;
