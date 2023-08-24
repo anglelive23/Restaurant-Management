@@ -15,7 +15,6 @@
                 .HasMaxLength(120)
                 .HasDefaultValue(string.Empty);
 
-
             builder.Property(a => a.AddressLine3)
                 .HasMaxLength(120)
                 .HasDefaultValue(string.Empty);

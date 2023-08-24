@@ -62,13 +62,13 @@
 
         #region Post
         [HttpPost("addons")]
-        public async Task<IActionResult> AddAddon([FromBody] CreateAddonCommand createAddonCommand, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddAddon([FromBody] AddonDto addonDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
             {
                 Log.Information("Starting controller Addons action AddAddon.");
                 var addon = await _mediator
-                    .Send(createAddonCommand);
+                    .Send(new CreateAddonCommand { Addon = addonDto });
 
                 if (addon is null)
                     return BadRequest("Addon already exists with same Name!");
