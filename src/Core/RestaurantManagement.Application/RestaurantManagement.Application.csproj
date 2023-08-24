@@ -19,6 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Features\Authentications\Commands\Register\" />
 		<Folder Include="Features\Categories\Commands\" />
 		<Folder Include="Features\Categories\Queries\" />
 		<Folder Include="Features\Sales\Commands\" />

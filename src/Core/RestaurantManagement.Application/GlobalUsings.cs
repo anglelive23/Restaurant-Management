@@ -7,6 +7,7 @@ global using System.Linq.Expressions;
 global using FluentValidation.Results;
 global using Microsoft.AspNetCore.OData.Deltas;
 global using RestaurantManagement.Domain.Entities;
+global using RestaurantManagement.Application.Models;
 global using Microsoft.Extensions.DependencyInjection;
 global using RestaurantManagement.Application.Exceptions;
 global using RestaurantManagement.Application.Abstractions;
