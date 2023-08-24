@@ -44,6 +44,10 @@
             });
             #endregion
 
+            #region Services
+            services.AddScoped<IFileService, FileService>();
+            #endregion
+
             return services;
         }
     }
