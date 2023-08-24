@@ -14,7 +14,9 @@
             {
                 //options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromMinutes(10)));
                 options.AddPolicy("Addons", policy => policy.Tag("Addons").Expire(TimeSpan.FromHours(1)));
+                options.AddPolicy("Addresses", policy => policy.Tag("Addresses").Expire(TimeSpan.FromHours(1)));
                 options.AddPolicy("Addon", policy => policy.Tag("Addons").SetVaryByQuery("key").Expire(TimeSpan.FromHours(1)));
+                options.AddPolicy("Address", policy => policy.Tag("Addresses").SetVaryByQuery("key").Expire(TimeSpan.FromHours(1)));
 
             });
             #endregion

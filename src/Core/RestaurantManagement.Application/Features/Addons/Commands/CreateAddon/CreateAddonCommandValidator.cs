@@ -4,11 +4,11 @@
     {
         public CreateAddonCommandValidator()
         {
-            RuleFor(a => a.Name)
+            RuleFor(a => a.Addon.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required!")
                 .MaximumLength(50);
 
-            RuleFor(a => a.Price)
+            RuleFor(a => a.Addon.Price)
                 .NotEmpty().WithMessage("{PropertyName} is required!")
                 .PrecisionScale(18, 2, true);
         }

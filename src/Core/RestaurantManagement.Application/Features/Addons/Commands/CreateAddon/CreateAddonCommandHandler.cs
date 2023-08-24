@@ -22,7 +22,7 @@
             if (validationResult.Errors.Count > 0)
                 throw new Exceptions.ValidationException(validationResult);
 
-            var addon = await _repo.AddAddonsAsync(request.Adapt<Addon>());
+            var addon = await _repo.AddAddonsAsync(request.Addon.Adapt<Addon>());
             return addon;
         }
         #endregion

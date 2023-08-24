@@ -1,13 +1,4 @@
-﻿using Microsoft.OData.Edm;
-using Microsoft.OData.ModelBuilder;
-using RestaurantManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RestaurantManagement.Application.Models
+﻿namespace RestaurantManagement.Application.Models
 {
     public class RestaurantEntityDataModel
     {
@@ -16,6 +7,7 @@ namespace RestaurantManagement.Application.Models
             var builder = new ODataConventionModelBuilder();
 
             builder.EntitySet<Addon>("Addons");
+            builder.EntitySet<Address>("Addresses");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
