@@ -18,7 +18,7 @@
         {
             try
             {
-                IQueryable<T>? data = _context
+                IQueryable<T> data = _context
                       .Set<T>();
 
                 if (predicate is not null)

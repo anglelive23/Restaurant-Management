@@ -11,7 +11,7 @@
         #endregion
 
         #region Patch
-        Task<Recipe?> PartUpdateRecipeAsync(int id, Delta<Recipe> recipe);
+        //Task<Recipe?> PartUpdateRecipeAsync(int id, Delta<Recipe> recipe);
         #endregion
 
         #region DELETE

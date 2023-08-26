@@ -6,14 +6,35 @@
         public CategoryRepository(RestaurantContext context) : base(context) { }
         #endregion
 
-        #region POST
-        public async Task<Category?> AddCategoryAsync(Category category)
+        #region GET
+        public IQueryable<Category> GetCategories(Expression<Func<Category, bool>>? predicate = null)
         {
             try
             {
-                if (IsExistingCateogry(category.Name))
-                    return null;
+                IQueryable<Category>? categories = _context
+                      .Categories;
 
+                if (predicate is not null)
+                    categories = categories.Where(predicate);
+
+                categories = categories.Include(c => c.Image);
+
+                return categories;
+            }
+            catch (Exception ex) when (ex is ArgumentNullException
+                                    || ex is InvalidOperationException
+                                    || ex is SqlException)
+            {
+                throw new DataFailureException(ex.Message);
+            }
+        }
+        #endregion
+
+        #region POST
+        public async Task<Category> AddCategoryAsync(Category category)
+        {
+            try
+            {
                 _context.Categories.Add(category);
                 await _context.SaveChangesAsync();
 

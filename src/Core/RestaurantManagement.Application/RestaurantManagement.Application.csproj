@@ -12,7 +12,6 @@
 		<PackageReference Include="Mapster" Version="7.3.0" />
 		<PackageReference Include="MediatR" Version="12.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-		<PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -20,8 +19,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Features\Categories\Commands\" />
-		<Folder Include="Features\Categories\Queries\" />
 		<Folder Include="Features\Sales\Commands\" />
 		<Folder Include="Features\Sales\Queries\" />
 	</ItemGroup>
