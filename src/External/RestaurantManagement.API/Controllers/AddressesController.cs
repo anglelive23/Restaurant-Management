@@ -1,8 +1,7 @@
 ﻿namespace RestaurantManagement.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AddressesController : ControllerBase
+    [Route("api/odata")]
+    public class AddressesController : ODataController
     {
         #region Fields and Properties
         private readonly IMediator _mediator;
@@ -16,8 +15,10 @@
         #endregion
 
         #region GET
-        [HttpGet]
+        [HttpGet("addresses")]
         [OutputCache(PolicyName = "Addresses")]
+        [EnableQuery(MaxExpansionDepth = 3, PageSize = 1000)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IQueryable<Address>))]
         public async Task<IActionResult> GetAllAddresses()
         {
             try
@@ -37,21 +38,20 @@
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("addresses({key})")]
         [OutputCache(PolicyName = "Address")]
-        public async Task<IActionResult> GetAddressById(int id)
+        [EnableQuery(MaxExpansionDepth = 3, PageSize = 1000)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
+        public async Task<IActionResult> GetAddressById(int key)
         {
             try
             {
                 Log.Information("Starting controller Addresses action GetAddressById.");
                 var address = await _mediator
-                    .Send(new GetAddressDetailsQuery { Id = id });
-
-                if (address == null)
-                    return NotFound($"Could not found adress with id: {id}");
+                    .Send(new GetAddressDetailsQuery { Id = key });
 
                 Log.Information("Returning Address data to the caller.");
-                return Ok(address);
+                return Ok(SingleResult.Create(address));
             }
             catch (FluentValidation.ValidationException vex)
             {
@@ -69,7 +69,8 @@
         #endregion
 
         #region Post
-        [HttpPost]
+        [HttpPost("addresses")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Address))]
         public async Task<IActionResult> AddAddress([FromBody] AddressDto addressDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
@@ -83,7 +84,7 @@
                 #endregion
 
                 Log.Information("Address has been added.");
-                return Ok(address);
+                return Created(address);
             }
             catch (FluentValidation.ValidationException vex)
             {
@@ -101,14 +102,15 @@
         #endregion
 
         #region Put
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAddress(int id, [FromBody] AddressDto addressDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        [HttpPut("addresses({key})")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateAddress(int key, [FromBody] AddressDto addressDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
             {
                 Log.Information("Starting controller Addresses action UpdateAddress.");
                 var currentAddress = await _mediator
-                    .Send(new UpdateAddressCommand { Id = id, Address = addressDto });
+                    .Send(new UpdateAddressCommand { Id = key, Address = addressDto });
 
                 if (currentAddress == null)
                     return NotFound("Address not found!");
@@ -117,7 +119,7 @@
                 await cache.EvictByTagAsync("Addresses", cancellationToken);
                 #endregion
 
-                Log.Information($"Address with id: {id} has been updated.");
+                Log.Information($"Address with id: {key} has been updated.");
                 return NoContent();
             }
             catch (FluentValidation.ValidationException vex)
@@ -135,15 +137,16 @@
         #endregion
 
         #region DELETE
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveAddress(int id, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        [HttpDelete("addresses({key})")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> RemoveAddress(int key, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
             {
                 Log.Information("Starting controller Addresses action RemoveAddress.");
 
                 var currentAddress = await _mediator
-                    .Send(new DeleteAddressCommand { Id = id });
+                    .Send(new DeleteAddressCommand { Id = key });
 
                 if (currentAddress is false)
                     return NotFound("Address not found!");
@@ -152,7 +155,7 @@
                 await cache.EvictByTagAsync("Addresses", cancellationToken);
                 #endregion
 
-                Log.Information($"Address with id: {id} has been marked as deleted.");
+                Log.Information($"Address with id: {key} has been marked as deleted.");
                 return NoContent();
             }
             catch (FluentValidation.ValidationException vex)

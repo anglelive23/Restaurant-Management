@@ -1,6 +1,6 @@
 ﻿namespace RestaurantManagement.Application.Features.Addresses.Queries.GetAddressDetailsQuery
 {
-    public class GetAddressDetailsQueryHandler : IRequestHandler<GetAddressDetailsQuery, Address?>
+    public class GetAddressDetailsQueryHandler : IRequestHandler<GetAddressDetailsQuery, IQueryable<Address>>
     {
         #region Fields and Properties
         private readonly IAddressRepository _repo;
@@ -14,13 +14,13 @@
         #endregion
 
         #region Interface Implementation
-        public async Task<Address?> Handle(GetAddressDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<IQueryable<Address>> Handle(GetAddressDetailsQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 var validator = new GetAddressDetailsQueryValidator();
                 await validator.ValidateAndThrowAsync(request, cancellationToken);
-                var address = await _repo.GetByIdAsync(request.Id);
+                var address = _repo.GetAll(a => a.Id == request.Id && a.IsDeleted == false);
                 return address;
             }
             catch (Exception ex) when (ex is FluentValidation.ValidationException

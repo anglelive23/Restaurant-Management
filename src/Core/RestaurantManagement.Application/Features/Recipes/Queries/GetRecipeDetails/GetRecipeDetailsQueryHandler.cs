@@ -1,6 +1,6 @@
 ﻿namespace RestaurantManagement.Application.Features.Recipes.Queries.GetRecipeDetails
 {
-    internal class GetRecipeDetailsQueryHandler : IRequestHandler<GetRecipeDetailsQuery, Recipe?>
+    internal class GetRecipeDetailsQueryHandler : IRequestHandler<GetRecipeDetailsQuery, IQueryable<Recipe>>
     {
         #region Fields and Properties
         private readonly IRecipeRepository _repo;
@@ -14,10 +14,10 @@
         #endregion
 
         #region Interface Implementation
-        public async Task<Recipe?> Handle(GetRecipeDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<IQueryable<Recipe>> Handle(GetRecipeDetailsQuery request, CancellationToken cancellationToken)
         {
-            var recipe = await _repo.GetByIdAsync(request.Id);
-            return recipe;
+            var recipe = _repo.GetAll(r => r.Id == request.Id && r.IsDeleted == false);
+            return await Task.FromResult(recipe);
         }
         #endregion
     }
