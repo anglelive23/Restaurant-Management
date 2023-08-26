@@ -3,30 +3,8 @@
     public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
         #region Construcotrs
-        public CategoryRepository(RestaurantContext context) : base(context) { }
-        #endregion
-
-        #region GET
-        public IQueryable<Category> GetCategories(Expression<Func<Category, bool>>? predicate = null)
+        public CategoryRepository(RestaurantContext context) : base(context)
         {
-            try
-            {
-                IQueryable<Category>? categories = _context
-                      .Categories;
-
-                if (predicate is not null)
-                    categories = categories.Where(predicate);
-
-                categories = categories.Include(c => c.Image);
-
-                return categories;
-            }
-            catch (Exception ex) when (ex is ArgumentNullException
-                                    || ex is InvalidOperationException
-                                    || ex is SqlException)
-            {
-                throw new DataFailureException(ex.Message);
-            }
         }
         #endregion
 
@@ -51,21 +29,12 @@
         #endregion
 
         #region PUT
-        public async Task<Category?> UpdateCategoryAsync(int id, Category category)
+        public async Task UpdateCategoryAsync(Category category)
         {
             try
             {
-                var currentCategory = await GetByIdAsync(id);
-
-                if (currentCategory == null)
-                    return null;
-
-                category.Id = currentCategory.Id;
-                _context.Entry(currentCategory).CurrentValues.SetValues(category);
-                _context.Update(currentCategory);
+                _context.Update(category);
                 await _context.SaveChangesAsync();
-
-                return currentCategory;
             }
             catch (Exception ex) when (ex is ArgumentNullException
                                     || ex is InvalidOperationException

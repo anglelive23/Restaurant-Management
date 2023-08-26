@@ -71,29 +71,23 @@
         }
         #endregion
 
-        #region Post
+        #region POST
         [HttpPost("categories")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Category))]
-        public async Task<IActionResult> AddCategory([FromForm] CreateCategoryDto categoryDto, IOutputCacheStore cache, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddCategory([FromForm] CreateCategoryDto categoryDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
             {
-                // Saving image to Server & DB
-                var imageServerSaver = await _mediator
-                    .Send(new SaveImageCommand { File = categoryDto.Image, SubFolder = "Categories" });
-                if (imageServerSaver is false)
-                    return BadRequest("There is already image with same name on server!");
-
-                var imageDbSaver = await _mediator
-                    .Send(new CreateImageCommand { CreatedBy = categoryDto.CreatedBy, Path = categoryDto.Image.FileName });
-                if (imageDbSaver is null)
-                    return BadRequest("Something went wrong while saving image to db!");
-
-                // Saving Category
                 var category = await _mediator
-                    .Send(new CreateCategoryCommand { CreatedBy = categoryDto.CreatedBy, ImageId = imageDbSaver.Id, Name = categoryDto.Name });
+                    .Send(new CreateCategoryCommand
+                    {
+                        CreatedBy = categoryDto.CreatedBy,
+                        Image = categoryDto.Image,
+                        Name = categoryDto.Name
+                    });
+
                 if (category is null)
-                    return BadRequest("Something went wrong while saving category to db!");
+                    return BadRequest("Something went wrong while trying to add new category!");
 
                 #region Cache Evict
                 await cache.EvictByTagAsync("Categories", cancellationToken);
@@ -116,6 +110,95 @@
             {
                 Log.Error($"{ex.Message}");
                 return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+        #endregion
+
+        #region PUT
+        [HttpPut("categories({key})")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateCategory(int key, [FromForm] UpdateCategoryDto categoryDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Log.Information("Starting controller Categories action UpdateCategory.");
+                var currentAddress = await _mediator
+                    .Send(new UpdateCategoryCommand
+                    {
+                        Id = key,
+                        CategoryDto = categoryDto
+                    });
+
+                if (currentAddress == null)
+                    return NotFound("Category not found!");
+
+                #region Cache Evict
+                await cache.EvictByTagAsync("Categories", cancellationToken);
+                #endregion
+
+                Log.Information($"Category with id: {key} has been updated.");
+                return NoContent();
+            }
+            catch (FluentValidation.ValidationException vex)
+            {
+                StringBuilder message = new StringBuilder();
+                foreach (var error in vex.Errors)
+                {
+                    message.AppendLine(error.ErrorMessage);
+                }
+                Log.Error($"{message}");
+                return StatusCode(500, $"An error occurred: {message}");
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is Exception)
+            {
+                Log.Error($"{ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+        #endregion
+
+        #region DELETE
+        [HttpDelete("categories({key})")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> RemoveCategory(int key, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        {
+            try
+            {
+                Log.Information("Starting controller Categories action RemoveCategory.");
+
+                var currentCategory = await _mediator
+                    .Send(new DeleteCategoryCommand
+                    {
+                        Id = key
+                    });
+
+                if (currentCategory is false)
+                    return NotFound("Category not found!");
+
+                #region Cache Evict
+                await cache.EvictByTagAsync("Categories", cancellationToken);
+                #endregion
+
+                Log.Information($"Category with id: {key} has been marked as deleted.");
+                return NoContent();
+            }
+            catch (FluentValidation.ValidationException vex)
+            {
+                StringBuilder message = new StringBuilder();
+                foreach (var error in vex.Errors)
+                {
+                    message.AppendLine(error.ErrorMessage);
+                }
+                Log.Error($"{message}");
+                return StatusCode(500, $"An error occurred: {message}");
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is ValidationException
+                                    || ex is Exception)
+            {
+                Log.Error($"{ex.Message}");
+                return StatusCode(500, ex.Message);
             }
         }
         #endregion

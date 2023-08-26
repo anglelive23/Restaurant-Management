@@ -1,20 +1,20 @@
 ﻿namespace RestaurantManagement.Application.Features.Categories.Commands.CreateCategory
 {
-    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Category>
+    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Category?>
     {
         #region Fields and Properties
-        private readonly ICategoryRepository _repo;
+        private readonly ICategoryService _categoryService;
         #endregion
 
         #region Constructors
-        public CreateCategoryCommandHandler(ICategoryRepository repo)
+        public CreateCategoryCommandHandler(ICategoryService categoryService)
         {
-            _repo = repo ?? throw new ArgumentNullException(nameof(repo));
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
         }
         #endregion
 
         #region Interface Implementation
-        public async Task<Category> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Category?> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
 
             try
@@ -22,11 +22,19 @@
                 var validator = new CreateCategoryCommandValidator();
                 await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkAdd = await _repo.AddCategoryAsync(request.Adapt<Category>());
+                var checkAdd = await _categoryService
+                    .AddCategoryWithImageAsync(new CreateCategoryDto
+                    {
+                        CreatedBy = request.CreatedBy,
+                        Image = request.Image,
+                        Name = request.Name
+                    });
+
                 return checkAdd;
             }
             catch (Exception ex) when (ex is FluentValidation.ValidationException
-                                    || ex is DataFailureException)
+                                    || ex is DataFailureException
+                                    || ex is Exception)
             {
                 throw;
             }
