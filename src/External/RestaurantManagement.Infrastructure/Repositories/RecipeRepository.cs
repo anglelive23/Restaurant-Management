@@ -57,29 +57,29 @@
         #endregion
 
         #region PATCH
-        public async Task<Recipe?> PartUpdateRecipeAsync(int id, Delta<Recipe> recipe)
-        {
-            try
-            {
-                var currentRecipe = await GetByIdAsync(id);
+        //public async Task<Recipe?> PartUpdateRecipeAsync(int id, Delta<Recipe> recipe)
+        //{
+        //    try
+        //    {
+        //        var currentRecipe = await GetByIdAsync(id);
 
-                if (currentRecipe == null)
-                    return null;
+        //        if (currentRecipe == null)
+        //            return null;
 
-                recipe.Patch(currentRecipe);
-                _context.Update(currentRecipe);
-                await _context.SaveChangesAsync();
+        //        recipe.Patch(currentRecipe);
+        //        _context.Update(currentRecipe);
+        //        await _context.SaveChangesAsync();
 
-                return currentRecipe;
-            }
-            catch (Exception ex) when (ex is ArgumentNullException
-                                    || ex is InvalidOperationException
-                                    || ex is DbUpdateException
-                                    || ex is SqlException)
-            {
-                throw new DataFailureException(ex.Message);
-            }
-        }
+        //        return currentRecipe;
+        //    }
+        //    catch (Exception ex) when (ex is ArgumentNullException
+        //                            || ex is InvalidOperationException
+        //                            || ex is DbUpdateException
+        //                            || ex is SqlException)
+        //    {
+        //        throw new DataFailureException(ex.Message);
+        //    }
+        //}
         #endregion
 
         #region DELETE

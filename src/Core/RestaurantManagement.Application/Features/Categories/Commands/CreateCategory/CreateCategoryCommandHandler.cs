@@ -1,27 +1,29 @@
-﻿namespace RestaurantManagement.Application.Features.Addresses.Queries.GetAddressDetailsQuery
+﻿namespace RestaurantManagement.Application.Features.Categories.Commands.CreateCategory
 {
-    public class GetAddressDetailsQueryHandler : IRequestHandler<GetAddressDetailsQuery, Address?>
+    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Category>
     {
         #region Fields and Properties
-        private readonly IAddressRepository _repo;
+        private readonly ICategoryRepository _repo;
         #endregion
 
         #region Constructors
-        public GetAddressDetailsQueryHandler(IAddressRepository repo)
+        public CreateCategoryCommandHandler(ICategoryRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
         #endregion
 
         #region Interface Implementation
-        public async Task<Address?> Handle(GetAddressDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<Category> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
+
             try
             {
-                var validator = new GetAddressDetailsQueryValidator();
+                var validator = new CreateCategoryCommandValidator();
                 await validator.ValidateAndThrowAsync(request, cancellationToken);
-                var address = await _repo.GetByIdAsync(request.Id);
-                return address;
+
+                var checkAdd = await _repo.AddCategoryAsync(request.Adapt<Category>());
+                return checkAdd;
             }
             catch (Exception ex) when (ex is FluentValidation.ValidationException
                                     || ex is DataFailureException)

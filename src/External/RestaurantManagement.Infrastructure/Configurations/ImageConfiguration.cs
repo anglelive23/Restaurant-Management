@@ -6,9 +6,9 @@
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(i => i.Description)
-                .IsRequired()
-                .HasMaxLength(25);
+            //builder.Property(i => i.Description)
+            //    .IsRequired()
+            //    .HasMaxLength(25);
 
             builder.Property(x => x.IsActive)
                 .HasDefaultValue(true);

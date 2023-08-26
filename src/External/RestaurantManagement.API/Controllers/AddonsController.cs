@@ -1,7 +1,10 @@
-﻿namespace RestaurantManagement.API.Controllers
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace RestaurantManagement.API.Controllers
 {
-    [Route("api/odata")]
-    public class AddonsController : ODataController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AddonsController : ControllerBase
     {
         #region Fields and Properties
         private readonly IMediator _mediator;
@@ -15,9 +18,8 @@
         #endregion
 
         #region GET
-        [HttpGet("addons")]
+        [HttpGet]
         [OutputCache(PolicyName = "Addons")]
-        [EnableQuery(MaxExpansionDepth = 3, PageSize = 1000)]
         public async Task<IActionResult> GetAllAddons()
         {
             try
@@ -26,6 +28,7 @@
                 var addons = await _mediator
                     .Send(new GetAddonsListQuery());
                 Log.Information("Returning all Addons to the caller.");
+                Console.WriteLine($"{addons.ToQueryString()}");
                 return Ok(addons);
             }
             catch (Exception ex) when (ex is DataFailureException
@@ -37,18 +40,20 @@
             }
         }
 
-        [HttpGet("addons({key})")]
+        [HttpGet("{id}")]
         [OutputCache(PolicyName = "Addon")]
-        [EnableQuery(MaxExpansionDepth = 3)]
-        public async Task<IActionResult> GetAddonById(int key)
+        public async Task<IActionResult> GetAddonById(int id)
         {
             try
             {
                 Log.Information("Starting controller Addons action GetAddonById.");
                 var addon = await _mediator
-                    .Send(new GetAddonDetailsQuery { Id = key });
+                    .Send(new GetAddonDetailsQuery { Id = id });
+                if (addon is null)
+                    return NotFound($"Could not found addon with id: {id}");
+
                 Log.Information("Returning Artist data to the caller.");
-                return Ok(SingleResult.Create(addon));
+                return Ok(addon);
             }
             catch (Exception ex) when (ex is DataFailureException
                                     || ex is InvalidOperationException
@@ -61,7 +66,7 @@
         #endregion
 
         #region Post
-        [HttpPost("addons")]
+        [HttpPost]
         public async Task<IActionResult> AddAddon([FromBody] AddonDto addonDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
@@ -78,7 +83,7 @@
                 #endregion
 
                 Log.Information("Addon has been added.");
-                return Created(addon);
+                return Ok(addon);
             }
             catch (Exception ex) when (ex is DataFailureException
                                     || ex is ValidationException
@@ -91,8 +96,8 @@
         #endregion
 
         #region Put
-        [HttpPut("addons({key})")]
-        public async Task<IActionResult> UpdateAddon(int key, [FromBody] UpdateAddonCommand updateAddonCommand, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAddon(int id, [FromBody] UpdateAddonCommand updateAddonCommand, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
             {
@@ -107,7 +112,7 @@
                 await cache.EvictByTagAsync("Addons", cancellationToken);
                 #endregion
 
-                Log.Information($"Addon with id: {key} has been updated.");
+                Log.Information($"Addon with id: {id} has been updated.");
                 return NoContent();
             }
             catch (Exception ex) when (ex is DataFailureException
@@ -120,15 +125,15 @@
         #endregion
 
         #region DELETE
-        [HttpDelete("addons({key})")]
-        public async Task<IActionResult> RemoveAddon(int key, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveAddon(int id, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
             {
                 Log.Information("Starting controller Addons action RemoveAddon.");
 
                 var currentAddon = await _mediator
-                    .Send(new DeleteAddonCommand { Id = key });
+                    .Send(new DeleteAddonCommand { Id = id });
 
                 if (currentAddon is false)
                     return NotFound("Addon not found!");
@@ -137,7 +142,7 @@
                 await cache.EvictByTagAsync("Addons", cancellationToken);
                 #endregion
 
-                Log.Information($"Addon with id: {key} has been marked as deleted.");
+                Log.Information($"Addon with id: {id} has been marked as deleted.");
                 return NoContent();
             }
             catch (Exception ex) when (ex is DataFailureException

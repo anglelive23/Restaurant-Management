@@ -1,27 +1,29 @@
-﻿namespace RestaurantManagement.Application.Features.Addresses.Queries.GetAddressDetailsQuery
+﻿namespace RestaurantManagement.Application.Features.Images.Commands.CreateImage
 {
-    public class GetAddressDetailsQueryHandler : IRequestHandler<GetAddressDetailsQuery, Address?>
+    public class CreateImageCommandHandler : IRequestHandler<CreateImageCommand, Image>
     {
         #region Fields and Properties
-        private readonly IAddressRepository _repo;
+        private readonly IImageRepository _repo;
         #endregion
 
         #region Constructors
-        public GetAddressDetailsQueryHandler(IAddressRepository repo)
+        public CreateImageCommandHandler(IImageRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
         #endregion
 
         #region Interface Implementation
-        public async Task<Address?> Handle(GetAddressDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<Image> Handle(CreateImageCommand request, CancellationToken cancellationToken)
         {
+
             try
             {
-                var validator = new GetAddressDetailsQueryValidator();
+                var validator = new CreateImageCommandValidator();
                 await validator.ValidateAndThrowAsync(request, cancellationToken);
-                var address = await _repo.GetByIdAsync(request.Id);
-                return address;
+
+                var checkAdd = await _repo.AddImageAsync(request.Adapt<Image>());
+                return checkAdd;
             }
             catch (Exception ex) when (ex is FluentValidation.ValidationException
                                     || ex is DataFailureException)

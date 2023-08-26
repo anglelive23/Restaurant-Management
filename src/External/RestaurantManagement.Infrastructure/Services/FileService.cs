@@ -13,13 +13,13 @@
 
             try
             {
-                var filename = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+                //var filename = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
                 var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", subFolder);
 
                 if (!Directory.Exists(directoryPath))
                     Directory.CreateDirectory(directoryPath);
 
-                var outputPath = Path.Combine(directoryPath, filename);
+                var outputPath = Path.Combine(directoryPath, file.FileName);
                 if (File.Exists(outputPath))
                     return false;
 

@@ -9,7 +9,7 @@ global using Microsoft.AspNetCore.Identity;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.IdentityModel.Tokens;
 global using System.IdentityModel.Tokens.Jwt;
-global using Microsoft.AspNetCore.OData.Deltas;
+//global using Microsoft.AspNetCore.OData.Deltas;
 global using RestaurantManagement.Domain.Common;
 global using Microsoft.Extensions.Configuration;
 global using RestaurantManagement.Domain.Entities;

@@ -17,7 +17,6 @@
         public async Task<IQueryable<Addon>> Handle(GetAddonsListQuery request, CancellationToken cancellationToken)
         {
             var addons = _repo.GetAll(a => a.IsDeleted == false);
-
             return await Task.FromResult(addons);
         }
         #endregion
