@@ -1,6 +1,6 @@
 ﻿namespace RestaurantManagement.Infrastructure.Services
 {
-    public class FileService : IFileService
+    public class ExternalImageService : IExternalImageService
     {
         #region Interface Implementation
         public bool SaveImageToServer(IFormFile file, string subFolder)
@@ -13,7 +13,6 @@
 
             try
             {
-                //var filename = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
                 var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", subFolder);
 
                 if (!Directory.Exists(directoryPath))
@@ -32,6 +31,27 @@
                 throw new IOException($"An error happened when trying to save the image: {ex.InnerException.Message ?? ex.Message}");
             }
         }
-        #endregion
+
+        public void UpdateImageOnServer(IFormFile file, string subFolder, string path)
+        {
+
+            try
+            {
+                var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", subFolder);
+
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+
+                var outputPath = Path.Combine(directoryPath, path);
+
+                using var stream = new FileStream(outputPath, FileMode.Create);
+                file.CopyTo(stream);
+            }
+            catch (Exception ex) when (ex is IOException)
+            {
+                throw new IOException($"An error happened when trying to save the image: {ex.InnerException.Message ?? ex.Message}");
+            }
+        }
     }
+    #endregion
 }

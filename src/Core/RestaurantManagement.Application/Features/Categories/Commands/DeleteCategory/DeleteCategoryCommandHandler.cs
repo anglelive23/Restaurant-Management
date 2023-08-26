@@ -1,33 +1,33 @@
-﻿namespace RestaurantManagement.Application.Features.Images.Commands.CreateImage
+﻿namespace RestaurantManagement.Application.Features.Categories.Commands.DeleteCategory
 {
-    public class CreateImageCommandHandler : IRequestHandler<CreateImageCommand, Image>
+    public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, bool>
     {
         #region Fields and Properties
-        private readonly IImageRepository _repo;
+        private readonly ICategoryRepository _repo;
         #endregion
 
         #region Constructors
-        public CreateImageCommandHandler(IImageRepository repo)
+        public DeleteCategoryCommandHandler(ICategoryRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
         #endregion
 
         #region Interface Implementation
-        public async Task<Image> Handle(CreateImageCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
-
             try
             {
-                var validator = new CreateImageCommandValidator();
+                var validator = new DeleteCategoryCommandValidator();
                 await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkAdd = await _repo.AddImageAsync(request.Adapt<Image>());
-                return checkAdd;
+                var checkDelete = await _repo.RemoveCategoryAsync(request.Id);
+                return checkDelete;
             }
             catch (Exception ex) when (ex is FluentValidation.ValidationException
                                     || ex is DataFailureException)
             {
+
                 throw;
             }
         }

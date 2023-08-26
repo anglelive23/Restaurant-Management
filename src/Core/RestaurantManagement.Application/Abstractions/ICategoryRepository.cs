@@ -2,16 +2,12 @@
 {
     public interface ICategoryRepository : IAsyncRepository<Category>
     {
-        #region GET
-        IQueryable<Category> GetCategories(Expression<Func<Category, bool>>? predicate = null);
-        #endregion
-
         #region POST
         Task<Category> AddCategoryAsync(Category category);
         #endregion
 
         #region PUT
-        Task<Category?> UpdateCategoryAsync(int id, Category category);
+        Task UpdateCategoryAsync(Category category);
         #endregion
 
         #region DELETE

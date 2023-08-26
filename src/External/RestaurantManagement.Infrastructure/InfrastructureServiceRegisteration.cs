@@ -46,7 +46,7 @@
             #endregion
 
             #region Services
-            services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IExternalImageService, ExternalImageService>();
             #endregion
 
             return services;

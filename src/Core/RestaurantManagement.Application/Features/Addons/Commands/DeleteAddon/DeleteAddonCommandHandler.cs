@@ -9,7 +9,7 @@
         #region Constructors
         public DeleteAddonCommandHandler(IAddonsRepository repo)
         {
-            _repo = repo;
+            _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
         #endregion
 
