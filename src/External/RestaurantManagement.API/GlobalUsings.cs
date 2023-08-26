@@ -21,7 +21,7 @@ global using RestaurantManagement.Application.Features.Addons.Commands.CreateAdd
 global using RestaurantManagement.Application.Features.Addons.Commands.DeleteAddon;
 global using RestaurantManagement.Application.Features.Addons.Commands.UpdateAddon;
 global using RestaurantManagement.Application.Features.Authentications.Commands.Login;
-global using RestaurantManagement.Application.Features.Files.Command.SaveImageCommand;
+global using RestaurantManagement.Application.Features.Files.Commands.SaveImageCommand;
 global using RestaurantManagement.Application.Features.Addresses.Commands.UpdateAddress;
 global using RestaurantManagement.Application.Features.Addresses.Commands.CreateAddress;
 global using RestaurantManagement.Application.Features.Addresses.Commands.DeleteAddress;

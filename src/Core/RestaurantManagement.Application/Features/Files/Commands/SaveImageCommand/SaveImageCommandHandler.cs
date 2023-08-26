@@ -1,4 +1,4 @@
-﻿namespace RestaurantManagement.Application.Features.Files.Command.SaveImageCommand
+﻿namespace RestaurantManagement.Application.Features.Files.Commands.SaveImageCommand
 {
     public class SaveImageCommandHandler : IRequestHandler<SaveImageCommand, bool>
     {
