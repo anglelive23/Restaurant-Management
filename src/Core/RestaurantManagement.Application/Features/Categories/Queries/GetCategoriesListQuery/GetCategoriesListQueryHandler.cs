@@ -16,7 +16,7 @@
         #region Interface Implementation
         public Task<IQueryable<Category>> Handle(GetCategoriesListQuery request, CancellationToken cancellationToken)
         {
-            var categories = _repo.GetCategories();
+            var categories = _repo.GetAll();
             return Task.FromResult(categories);
         }
         #endregion

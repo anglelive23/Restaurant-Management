@@ -1,8 +1,7 @@
 ﻿namespace RestaurantManagement.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CategoriesController : ControllerBase
+    [Route("api/odata")]
+    public class CategoriesController : ODataController
     {
         #region Fields and Properties
         private readonly IMediator _mediator;
@@ -16,8 +15,10 @@
         #endregion
 
         #region GET
-        [HttpGet]
+        [HttpGet("categories")]
         [OutputCache(PolicyName = "Categories")]
+        [EnableQuery(MaxExpansionDepth = 3, PageSize = 1000)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IQueryable<Category>))]
         public async Task<IActionResult> GetAllCategories()
         {
             try
@@ -36,21 +37,20 @@
             }
         }
 
-        [HttpGet("{id}")]
-        [OutputCache(PolicyName = "Categories")]
-        public async Task<IActionResult> GetCategoryById(int id)
+        [HttpGet("categories({key})")]
+        [OutputCache(PolicyName = "Category")]
+        [EnableQuery(MaxExpansionDepth = 3, PageSize = 1000)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Category))]
+        public async Task<IActionResult> GetCategoryById(int key)
         {
             try
             {
                 Log.Information("Starting controller Categories action GetCategoryById.");
                 var category = await _mediator
-                    .Send(new GetCategoryDetailsQuery { Id = id });
+                    .Send(new GetCategoryDetailsQuery { Id = key });
 
-                if (category is null)
-                    return NotFound($"Could not found category with id: {id}");
-
-                Log.Information($"Returning category with id: {id} to the caller.");
-                return Ok(category);
+                Log.Information($"Returning category with id: {key} to the caller.");
+                return Ok(SingleResult.Create(category));
             }
             catch (FluentValidation.ValidationException vex)
             {
@@ -72,8 +72,9 @@
         #endregion
 
         #region Post
-        [HttpPost]
-        public async Task<IActionResult> AddCategory([FromForm] CreateCategoryDto categoryDto)
+        [HttpPost("categories")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Category))]
+        public async Task<IActionResult> AddCategory([FromForm] CreateCategoryDto categoryDto, IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
             {
@@ -94,7 +95,11 @@
                 if (category is null)
                     return BadRequest("Something went wrong while saving category to db!");
 
-                return Ok(category);
+                #region Cache Evict
+                await cache.EvictByTagAsync("Categories", cancellationToken);
+                #endregion
+
+                return Created(category);
             }
             catch (FluentValidation.ValidationException vex)
             {
