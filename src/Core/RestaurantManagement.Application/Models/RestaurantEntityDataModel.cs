@@ -9,6 +9,7 @@
             builder.EntitySet<Addon>("Addons");
             builder.EntitySet<Address>("Addresses");
             builder.EntitySet<Category>("Categories");
+            builder.EntitySet<Contact>("Contacts");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

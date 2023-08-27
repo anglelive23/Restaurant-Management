@@ -26,7 +26,8 @@
                 return checkUpdate;
             }
             catch (Exception ex) when (ex is DataFailureException
-                                    || ex is FluentValidation.ValidationException)
+                                    || ex is FluentValidation.ValidationException
+                                    || ex is Exception)
             {
                 throw;
             }

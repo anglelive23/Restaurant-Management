@@ -38,3 +38,8 @@ global using RestaurantManagement.Application.Features.Addresses.Queries.GetAddr
 global using RestaurantManagement.Application.Features.Addresses.Queries.GetAddressDetailsQuery;
 global using RestaurantManagement.Application.Features.Categories.Queries.GetCategoriesListQuery;
 global using RestaurantManagement.Application.Features.Categories.Queries.GetCategoryDetailsQuery;
+global using RestaurantManagement.Application.Features.Contacts.Commands.CreateContact;
+global using RestaurantManagement.Application.Features.Contacts.Commands.DeleteContact;
+global using RestaurantManagement.Application.Features.Contacts.Commands.UpdateContact;
+global using RestaurantManagement.Application.Features.Contacts.Queries.GetContactDetailsQuery;
+global using RestaurantManagement.Application.Features.Contacts.Queries.GetContactsListQuery;

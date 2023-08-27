@@ -16,7 +16,6 @@
         #region Interface Implementation
         public async Task<Category?> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
-
             try
             {
                 var validator = new CreateCategoryCommandValidator();

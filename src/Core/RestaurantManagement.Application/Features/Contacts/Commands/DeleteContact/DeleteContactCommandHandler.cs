@@ -1,27 +1,27 @@
-﻿namespace RestaurantManagement.Application.Features.Categories.Commands.DeleteCategory
+﻿namespace RestaurantManagement.Application.Features.Contacts.Commands.DeleteContact
 {
-    public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, bool>
+    public class DeleteContactCommandHandler : IRequestHandler<DeleteContactCommand, bool>
     {
         #region Fields and Properties
-        private readonly ICategoryRepository _repo;
+        private readonly IContactRepository _repo;
         #endregion
 
         #region Constructors
-        public DeleteCategoryCommandHandler(ICategoryRepository repo)
+        public DeleteContactCommandHandler(IContactRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
         #endregion
 
         #region Interface Implementation
-        public async Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var validator = new DeleteCategoryCommandValidator();
+                var validator = new DeleteContactCommandValidator();
                 await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkDelete = await _repo.RemoveCategoryAsync(request.Id);
+                var checkDelete = await _repo.RemoveContactAsync(request.Id);
                 return checkDelete;
             }
             catch (Exception ex) when (ex is FluentValidation.ValidationException
