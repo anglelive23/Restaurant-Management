@@ -1,33 +1,33 @@
 ﻿namespace RestaurantManagement.API.Controllers
 {
     [Route("api/odata")]
-    public class CategoriesController : ODataController
+    public class ContactsController : ODataController
     {
         #region Fields and Properties
         private readonly IMediator _mediator;
         #endregion
 
         #region Constructors
-        public CategoriesController(IMediator mediator)
+        public ContactsController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         #endregion
 
         #region GET
-        [HttpGet("categories")]
-        [OutputCache(PolicyName = "Categories")]
+        [HttpGet("contacts")]
+        [OutputCache(PolicyName = "Contacts")]
         [EnableQuery(MaxExpansionDepth = 3, PageSize = 1000)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IQueryable<Category>))]
-        public async Task<IActionResult> GetAllCategories()
+        [ProducesResponseType(200, Type = typeof(IQueryable<Contact>))]
+        public async Task<IActionResult> GetAllContacts()
         {
             try
             {
-                Log.Information("Starting controller Categories action GetAllCategories.");
-                var categories = await _mediator
-                    .Send(new GetCategoriesListQuery());
-                Log.Information("Returning all Categories to the caller.");
-                return Ok(categories);
+                Log.Information("Starting controller Contacts action GetAllContacts.");
+                var contacts = await _mediator
+                    .Send(new GetContactsListQuery());
+                Log.Information("Returning all Contacts to the caller.");
+                return Ok(contacts);
             }
             catch (Exception ex) when (ex is DataFailureException
                                     || ex is Exception)
@@ -37,23 +37,23 @@
             }
         }
 
-        [HttpGet("categories({key})")]
-        [OutputCache(PolicyName = "Category")]
+        [HttpGet("contacts({key})")]
+        [OutputCache(PolicyName = "Contact")]
         [EnableQuery(MaxExpansionDepth = 3, PageSize = 1000)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Category))]
-        public async Task<IActionResult> GetCategoryById(int key)
+        [ProducesResponseType(200, Type = typeof(Contact))]
+        public async Task<IActionResult> GetContactById(int key)
         {
             try
             {
-                Log.Information("Starting controller Categories action GetCategoryById.");
-                var category = await _mediator
-                    .Send(new GetCategoryDetailsQuery
+                Log.Information("Starting controller Contacts action GetContactById.");
+                var contact = await _mediator
+                    .Send(new GetContactDetailsQuery
                     {
                         Id = key
                     });
 
-                Log.Information($"Returning category with id: {key} to the caller.");
-                return Ok(SingleResult.Create(category));
+                Log.Information("Returning Contacts data to the caller.");
+                return Ok(SingleResult.Create(contact));
             }
             catch (FluentValidation.ValidationException vex)
             {
@@ -75,27 +75,23 @@
         #endregion
 
         #region POST
-        [HttpPost("categories")]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Category))]
-        public async Task<IActionResult> AddCategory([FromForm] CreateCategoryDto categoryDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        [HttpPost("contacts")]
+        [ProducesResponseType(201, Type = typeof(Contact))]
+        public async Task<IActionResult> AddContact([FromBody] CreateContactDto contactDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
             {
-                Log.Information("Starting controller Categories action AddCategory.");
-                var category = await _mediator
-                    .Send(new CreateCategoryCommand
+                Log.Information("Starting controller Contacts action AddContact.");
+                var contact = await _mediator
+                    .Send(new CreateContactCommand
                     {
-                        CreatedBy = categoryDto.CreatedBy,
-                        Image = categoryDto.Image,
-                        Name = categoryDto.Name
+                        ContactDto = contactDto
                     });
 
-                if (category is null)
-                    return BadRequest("Something went wrong while trying to add new category!");
+                await cache.EvictByTagAsync("Contacts", cancellationToken);
 
-                await cache.EvictByTagAsync("Categories", cancellationToken);
-
-                return Created(category);
+                Log.Information("Contact has been added.");
+                return Created(contact);
             }
             catch (FluentValidation.ValidationException vex)
             {
@@ -111,32 +107,32 @@
                                     || ex is Exception)
             {
                 Log.Error($"{ex.Message}");
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                return StatusCode(500, ex.Message);
             }
         }
         #endregion
 
         #region PUT
-        [HttpPut("categories({key})")]
+        [HttpPut("contacts({key})")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> UpdateCategory(int key, [FromForm] UpdateCategoryDto categoryDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateContact(int key, [FromBody] UpdateContactDto updateContactDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
             {
-                Log.Information("Starting controller Categories action UpdateCategory.");
-                var currentAddress = await _mediator
-                    .Send(new UpdateCategoryCommand
+                Log.Information("Starting controller Contacts action UpdateContact.");
+                var currentContact = await _mediator
+                    .Send(new UpdateContactCommand
                     {
                         Id = key,
-                        CategoryDto = categoryDto
+                        ContactDto = updateContactDto
                     });
 
-                if (currentAddress == null)
-                    return NotFound("Category not found!");
+                if (currentContact is null)
+                    return NotFound("Contact not found!");
 
-                await cache.EvictByTagAsync("Categories", cancellationToken);
+                await cache.EvictByTagAsync("Contacts", cancellationToken);
 
-                Log.Information($"Category with id: {key} has been updated.");
+                Log.Information($"Contact with id: {key} has been updated.");
                 return NoContent();
             }
             catch (FluentValidation.ValidationException vex)
@@ -159,26 +155,26 @@
         #endregion
 
         #region DELETE
-        [HttpDelete("categories({key})")]
+        [HttpDelete("contacts({key})")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> RemoveCategory(int key, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
+        public async Task<IActionResult> RemoveContact(int key, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
             try
             {
-                Log.Information("Starting controller Categories action RemoveCategory.");
+                Log.Information("Starting controller Contacts action RemoveContact.");
 
-                var currentCategory = await _mediator
-                    .Send(new DeleteCategoryCommand
+                var currentContact = await _mediator
+                    .Send(new DeleteContactCommand
                     {
                         Id = key
                     });
 
-                if (currentCategory is false)
-                    return NotFound("Category not found!");
+                if (currentContact is false)
+                    return NotFound("Contact not found!");
 
-                await cache.EvictByTagAsync("Categories", cancellationToken);
+                await cache.EvictByTagAsync("Contacts", cancellationToken);
 
-                Log.Information($"Category with id: {key} has been marked as deleted.");
+                Log.Information($"Contact with id: {key} has been marked as deleted.");
                 return NoContent();
             }
             catch (FluentValidation.ValidationException vex)
@@ -192,7 +188,6 @@
                 return StatusCode(500, $"An error occurred: {message}");
             }
             catch (Exception ex) when (ex is DataFailureException
-                                    || ex is ValidationException
                                     || ex is Exception)
             {
                 Log.Error($"{ex.Message}");

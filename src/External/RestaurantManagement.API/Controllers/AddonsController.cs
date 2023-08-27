@@ -48,13 +48,25 @@
             {
                 Log.Information("Starting controller Addons action GetAddonById.");
                 var addon = await _mediator
-                    .Send(new GetAddonDetailsQuery { Id = key });
+                    .Send(new GetAddonDetailsQuery
+                    {
+                        Id = key
+                    });
 
                 Log.Information("Returning Artist data to the caller.");
                 return Ok(SingleResult.Create(addon));
             }
+            catch (FluentValidation.ValidationException vex)
+            {
+                StringBuilder message = new StringBuilder();
+                foreach (var error in vex.Errors)
+                {
+                    message.AppendLine(error.ErrorMessage);
+                }
+                Log.Error($"{message}");
+                return StatusCode(500, $"An error occurred: {message}");
+            }
             catch (Exception ex) when (ex is DataFailureException
-                                    || ex is InvalidOperationException
                                     || ex is Exception)
             {
                 Log.Error($"{ex.Message}");
@@ -77,15 +89,22 @@
                 if (addon is null)
                     return BadRequest("Addon already exists with same Name!");
 
-                #region Cache Evict
                 await cache.EvictByTagAsync("Addons", cancellationToken);
-                #endregion
 
                 Log.Information("Addon has been added.");
                 return Created(addon);
             }
+            catch (FluentValidation.ValidationException vex)
+            {
+                StringBuilder message = new StringBuilder();
+                foreach (var error in vex.Errors)
+                {
+                    message.AppendLine(error.ErrorMessage);
+                }
+                Log.Error($"{message}");
+                return StatusCode(500, $"An error occurred: {message}");
+            }
             catch (Exception ex) when (ex is DataFailureException
-                                    || ex is ValidationException
                                     || ex is Exception)
             {
                 Log.Error($"{ex.Message}");
@@ -108,12 +127,20 @@
                 if (currentAddon == null)
                     return NotFound("Addon not found!");
 
-                #region Cache Evict
                 await cache.EvictByTagAsync("Addons", cancellationToken);
-                #endregion
 
                 Log.Information($"Addon with id: {key} has been updated.");
                 return NoContent();
+            }
+            catch (FluentValidation.ValidationException vex)
+            {
+                StringBuilder message = new StringBuilder();
+                foreach (var error in vex.Errors)
+                {
+                    message.AppendLine(error.ErrorMessage);
+                }
+                Log.Error($"{message}");
+                return StatusCode(500, $"An error occurred: {message}");
             }
             catch (Exception ex) when (ex is DataFailureException
                                     || ex is Exception)
@@ -139,15 +166,22 @@
                 if (currentAddon is false)
                     return NotFound("Addon not found!");
 
-                #region Cache Evict
                 await cache.EvictByTagAsync("Addons", cancellationToken);
-                #endregion
 
                 Log.Information($"Addon with id: {key} has been marked as deleted.");
                 return NoContent();
             }
+            catch (FluentValidation.ValidationException vex)
+            {
+                StringBuilder message = new StringBuilder();
+                foreach (var error in vex.Errors)
+                {
+                    message.AppendLine(error.ErrorMessage);
+                }
+                Log.Error($"{message}");
+                return StatusCode(500, $"An error occurred: {message}");
+            }
             catch (Exception ex) when (ex is DataFailureException
-                                    || ex is ValidationException
                                     || ex is Exception)
             {
                 Log.Error($"{ex.Message}");
