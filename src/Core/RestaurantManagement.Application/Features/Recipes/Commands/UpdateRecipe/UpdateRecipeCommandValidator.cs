@@ -1,16 +1,8 @@
-﻿namespace RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipe
+﻿namespace RestaurantManagement.Application.Features.Recipes.Commands.UpdateRecipe
 {
-    public class CreateRecipeCommandValidator : AbstractValidator<CreateRecipeCommand>
+    public class UpdateRecipeCommandValidator : AbstractValidator<UpdateRecipeCommand>
     {
-        //private readonly IRecipeRepository _repo;
-
-        public CreateRecipeCommandValidator(/*IRecipeRepository repo*/)
-        {
-            //_repo = repo ?? throw new ArgumentNullException(nameof(repo));
-            ApplyValidationsRules();
-        }
-
-        public void ApplyValidationsRules()
+        public UpdateRecipeCommandValidator()
         {
             RuleFor(r => r.RecipeDto.Name)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
@@ -42,13 +34,9 @@
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull();
 
-            //RuleFor(e => e)
-            //    .MustAsync(RecipeIsUnique).WithMessage("Recipe already exist on server!");
+            RuleFor(r => r.RecipeDto.LastModifiedBy)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull();
         }
-
-        //private async Task<bool> RecipeIsUnique(CreateRecipeCommand r, CancellationToken cancellationToken)
-        //{
-        //    return await _repo.IsUniqueRecipe(r.Name);
-        //}
     }
 }

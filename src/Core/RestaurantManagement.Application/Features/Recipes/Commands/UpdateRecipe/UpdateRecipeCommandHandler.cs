@@ -3,24 +3,35 @@
     public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, Recipe?>
     {
         #region Fields and Properties
-        private readonly IRecipeRepository _repo;
+        private readonly IRecipeService _recipeService;
         #endregion
 
         #region Constructors
-        public UpdateRecipeCommandHandler(IRecipeRepository repo)
+        public UpdateRecipeCommandHandler(IRecipeService recipeService)
         {
-            _repo = repo ?? throw new ArgumentNullException(nameof(repo));
+            _recipeService = recipeService ?? throw new ArgumentNullException(nameof(recipeService));
         }
         #endregion
 
         #region Interface Implementation
         public async Task<Recipe?> Handle(UpdateRecipeCommand request, CancellationToken cancellationToken)
         {
-            var recipe = await _repo.GetByIdAsync(request.Id);
-            if (recipe == null)
-                return null;
-            var checkUpdate = await _repo.UpdateRecipeAsync(recipe.Id, recipe);
-            return checkUpdate;
+            try
+            {
+                var validator = new UpdateRecipeCommandValidator();
+                await validator.ValidateAndThrowAsync(request, cancellationToken);
+
+                var checkUpdate = await _recipeService
+                    .UpdateRecipeWithImageAsync(request.Id, request.RecipeDto);
+                return checkUpdate;
+            }
+            catch (Exception ex) when (ex is FluentValidation.ValidationException
+                                    || ex is DataFailureException
+                                    || ex is ApplicationException
+                                    || ex is Exception)
+            {
+                throw;
+            }
         }
         #endregion
     }

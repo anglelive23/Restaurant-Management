@@ -18,6 +18,15 @@
                 .IsRequired()
                 .HasPrecision(18, 2);
 
+            builder.Property(x => x.IsOffer)
+                .HasDefaultValue(false);
+
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.IsDeleted)
+                .HasDefaultValue(false);
+
             //builder.Property(x => x.Rate)
             //    .HasAnnotation("Range", new RangeAttribute(0, 5));
         }

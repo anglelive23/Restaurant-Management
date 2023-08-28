@@ -16,8 +16,16 @@
         #region Interface Implementation
         public async Task<IQueryable<Recipe>> Handle(GetRecipesListQuery request, CancellationToken cancellationToken)
         {
-            var recipes = _repo.GetAll();
-            return await Task.FromResult(recipes);
+            try
+            {
+                var recipes = _repo.GetAll();
+                return await Task.FromResult(recipes);
+            }
+            catch (Exception ex) when (ex is DataFailureException
+                                    || ex is Exception)
+            {
+                throw;
+            }
         }
         #endregion
     }
