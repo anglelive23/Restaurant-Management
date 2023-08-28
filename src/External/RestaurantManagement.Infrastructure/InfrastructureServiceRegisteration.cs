@@ -12,7 +12,6 @@
 
             #region Repositories
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
-            services.AddScoped<IAddonsRepository, AddonsRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
