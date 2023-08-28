@@ -10,6 +10,7 @@
 
             #region Services
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IRecipeService, RecipeService>();
             #endregion
 
             return services;

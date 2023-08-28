@@ -1,4 +1,6 @@
-﻿namespace RestaurantManagement.Domain.Entities;
+﻿using Microsoft.OData.ModelBuilder;
+
+namespace RestaurantManagement.Domain.Entities;
 
 public class Recipe : AuditableEntity
 {
@@ -10,9 +12,11 @@ public class Recipe : AuditableEntity
     public int? Discount { get; set; }
     public Image? Image { get; set; }
     public int? ImageId { get; set; }
+    [Contained]
     public List<Size>? Sizes { get; set; }
+    [Contained]
     public List<Addon>? Addons { get; set; }
     public Category? Category { get; set; }
     public int? CategoryId { get; set; }
-    public bool IsOffer { get; set; } = false;
+    public bool IsOffer { get; set; }
 }

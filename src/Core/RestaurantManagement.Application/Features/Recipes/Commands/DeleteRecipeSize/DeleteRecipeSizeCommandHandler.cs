@@ -1,28 +1,30 @@
-﻿namespace RestaurantManagement.Application.Features.Recipes.Queries.GetRecipeDetails
+﻿namespace RestaurantManagement.Application.Features.Recipes.Commands.DeleteRecipeSize
 {
-    internal class GetRecipeDetailsQueryHandler : IRequestHandler<GetRecipeDetailsQuery, IQueryable<Recipe>>
+    public class DeleteRecipeSizeCommandHandler
+        : IRequestHandler<DeleteRecipeSizeCommand, bool>
     {
         #region Fields and Properties
         private readonly IRecipeRepository _repo;
         #endregion
 
         #region Constructors
-        public GetRecipeDetailsQueryHandler(IRecipeRepository repo)
+        public DeleteRecipeSizeCommandHandler(IRecipeRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
         #endregion
 
         #region Interface Implementation
-        public async Task<IQueryable<Recipe>> Handle(GetRecipeDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteRecipeSizeCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var validator = new GetRecipeDetailsQueryValidator();
+                var validator = new DeleteRecipeSizeCommandValidator();
                 await validator.ValidateAndThrowAsync(request, cancellationToken);
-                var recipe = _repo
-                    .GetAll(r => r.Id == request.Id && r.IsDeleted == false);
-                return recipe;
+
+                var checkDelete = await _repo
+                    .RemoveSizeForRecipeAsync(request.RecipeId, request.SizeId);
+                return checkDelete;
             }
             catch (Exception ex) when (ex is FluentValidation.ValidationException
                                     || ex is DataFailureException
@@ -30,7 +32,6 @@
             {
                 throw;
             }
-
         }
         #endregion
     }

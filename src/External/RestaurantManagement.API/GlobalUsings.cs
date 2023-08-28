@@ -43,3 +43,16 @@ global using RestaurantManagement.Application.Features.Contacts.Commands.DeleteC
 global using RestaurantManagement.Application.Features.Contacts.Commands.UpdateContact;
 global using RestaurantManagement.Application.Features.Contacts.Queries.GetContactDetailsQuery;
 global using RestaurantManagement.Application.Features.Contacts.Queries.GetContactsListQuery;
+global using RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipe;
+global using RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipeAddon;
+global using RestaurantManagement.Application.Features.Recipes.Commands.CreateRecipeSize;
+global using RestaurantManagement.Application.Features.Recipes.Queries.GetRecipeAddonsList;
+global using RestaurantManagement.Application.Features.Recipes.Queries.GetRecipeDetails;
+global using RestaurantManagement.Application.Features.Recipes.Queries.GetRecipeSizesList;
+global using RestaurantManagement.Application.Features.Recipes.Queries.GetRecipesList;
+global using RestaurantManagement.Application.Features.Recipes.Commands.DeleteRecipe;
+global using RestaurantManagement.Application.Features.Recipes.Commands.DeleteRecipeAddon;
+global using RestaurantManagement.Application.Features.Recipes.Commands.DeleteRecipeSize;
+global using RestaurantManagement.Application.Features.Recipes.Commands.UpdateRecipe;
+global using RestaurantManagement.Application.Features.Recipes.Commands.UpdateRecipeAddon;
+global using RestaurantManagement.Application.Features.Recipes.Commands.UpdateRecipeSize;

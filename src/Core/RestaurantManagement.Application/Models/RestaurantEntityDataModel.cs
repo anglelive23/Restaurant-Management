@@ -10,6 +10,7 @@
             builder.EntitySet<Address>("Addresses");
             builder.EntitySet<Category>("Categories");
             builder.EntitySet<Contact>("Contacts");
+            builder.EntitySet<Recipe>("Recipes");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
