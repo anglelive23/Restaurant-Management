@@ -16,19 +16,11 @@
         #region Interface Implementation
         public async Task<bool> Handle(DeleteAddressCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new DeleteAddressCommandValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var validator = new DeleteAddressCommandValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkDelete = await _repo.RemoveAddressAsync(request.Id);
-                return checkDelete;
-            }
-            catch (Exception ex) when (ex is FluentValidation.ValidationException
-                                    || ex is DataFailureException)
-            {
-                throw;
-            }
+            var checkDelete = await _repo.RemoveAddressAsync(request.Id);
+            return checkDelete;
         }
         #endregion
     }

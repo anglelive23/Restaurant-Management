@@ -17,21 +17,12 @@
         #region Interface Implementation
         public async Task<bool> Handle(DeleteRecipeSizeCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new DeleteRecipeSizeCommandValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var validator = new DeleteRecipeSizeCommandValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkDelete = await _repo
-                    .RemoveSizeForRecipeAsync(request.RecipeId, request.SizeId);
-                return checkDelete;
-            }
-            catch (Exception ex) when (ex is FluentValidation.ValidationException
-                                    || ex is DataFailureException
-                                    || ex is Exception)
-            {
-                throw;
-            }
+            var checkDelete = await _repo
+                .RemoveSizeForRecipeAsync(request.RecipeId, request.SizeId);
+            return checkDelete;
         }
         #endregion
     }

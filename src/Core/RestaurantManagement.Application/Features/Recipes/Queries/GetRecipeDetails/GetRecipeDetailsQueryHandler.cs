@@ -16,21 +16,11 @@
         #region Interface Implementation
         public async Task<IQueryable<Recipe>> Handle(GetRecipeDetailsQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new GetRecipeDetailsQueryValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
-                var recipe = _repo
-                    .GetAll(r => r.Id == request.Id && r.IsDeleted == false);
-                return recipe;
-            }
-            catch (Exception ex) when (ex is FluentValidation.ValidationException
-                                    || ex is DataFailureException
-                                    || ex is Exception)
-            {
-                throw;
-            }
-
+            var validator = new GetRecipeDetailsQueryValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var recipe = _repo
+                .GetAll(r => r.Id == request.Id && r.IsDeleted == false);
+            return recipe;
         }
         #endregion
     }

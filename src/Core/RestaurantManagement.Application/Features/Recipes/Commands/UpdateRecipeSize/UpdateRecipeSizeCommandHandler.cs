@@ -16,22 +16,12 @@
         #region Interface Implementation
         public async Task<Size?> Handle(UpdateRecipeSizeCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new UpdateRecipeSizeCommandValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var validator = new UpdateRecipeSizeCommandValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkUpdate = await _repo
-                    .UpdateSizeForRecipeAsync(request.RecipeId, request.SizeId, request.SizeDto.Adapt<Size>());
-                return checkUpdate;
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is FluentValidation.ValidationException
-                                    || ex is Exception)
-            {
-
-                throw;
-            }
+            var checkUpdate = await _repo
+                .UpdateSizeForRecipeAsync(request.RecipeId, request.SizeId, request.SizeDto.Adapt<Size>());
+            return checkUpdate;
         }
         #endregion
     }

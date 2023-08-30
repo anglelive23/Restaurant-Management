@@ -16,22 +16,12 @@
         #region Interface Implementation
         public async Task<Addon?> Handle(UpdateRecipeAddonCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new UpdateRecipeAddonCommandValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var validator = new UpdateRecipeAddonCommandValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkUpdate = await _repo
-                    .UpdateAddonForRecipeAsync(request.RecipeId, request.AddonId, request.AddonDto.Adapt<Addon>());
-                return checkUpdate;
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is FluentValidation.ValidationException
-                                    || ex is Exception)
-            {
-
-                throw;
-            }
+            var checkUpdate = await _repo
+                .UpdateAddonForRecipeAsync(request.RecipeId, request.AddonId, request.AddonDto.Adapt<Addon>());
+            return checkUpdate;
         }
         #endregion
     }

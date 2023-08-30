@@ -16,21 +16,12 @@
         #region Interface Implementation
         public async Task<IQueryable<Size>> Handle(GetRecipeSizesListQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new GetRecipeSizesListQueryValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var validator = new GetRecipeSizesListQueryValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var sizes = _repo
-                    .GetSizesForRecipe(request.Id, s => s.IsDeleted == false);
-                return sizes;
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is FluentValidation.ValidationException
-                                    || ex is Exception)
-            {
-                throw;
-            }
+            var sizes = _repo
+                .GetSizesForRecipe(request.Id, s => s.IsDeleted == false);
+            return sizes;
         }
         #endregion
     }

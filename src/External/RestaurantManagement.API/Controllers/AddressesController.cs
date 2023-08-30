@@ -21,21 +21,11 @@
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IQueryable<Address>))]
         public async Task<IActionResult> GetAllAddresses()
         {
-            try
-            {
-                Log.Information("Starting controller Addresses action GetAllAddresses.");
-                var addresses = await _mediator
-                    .Send(new GetAddressesListQuery());
-                Log.Information("Returning all Addresses to the caller.");
-                return Ok(addresses);
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is ValidationException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+            Log.Information("Starting controller Addresses action GetAllAddresses.");
+            var addresses = await _mediator
+                .Send(new GetAddressesListQuery());
+            Log.Information("Returning all Addresses to the caller.");
+            return Ok(addresses);
         }
 
         [HttpGet("addresses({key})")]
@@ -44,35 +34,15 @@
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Address))]
         public async Task<IActionResult> GetAddressById(int key)
         {
-            try
-            {
-                Log.Information("Starting controller Addresses action GetAddressById.");
-                var address = await _mediator
-                    .Send(new GetAddressDetailsQuery
-                    {
-                        Id = key
-                    });
-
-                Log.Information("Returning Address data to the caller.");
-                return Ok(SingleResult.Create(address));
-            }
-            catch (FluentValidation.ValidationException vex)
-            {
-                StringBuilder message = new StringBuilder();
-                foreach (var error in vex.Errors)
+            Log.Information("Starting controller Addresses action GetAddressById.");
+            var address = await _mediator
+                .Send(new GetAddressDetailsQuery
                 {
-                    message.AppendLine(error.ErrorMessage);
-                }
-                Log.Error($"{message}");
-                return StatusCode(500, $"An error occurred: {message}");
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is InvalidOperationException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+                    Id = key
+                });
+
+            Log.Information("Returning Address data to the caller.");
+            return Ok(SingleResult.Create(address));
         }
         #endregion
 
@@ -81,37 +51,17 @@
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Address))]
         public async Task<IActionResult> AddAddress([FromBody] AddressDto addressDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
-            try
-            {
-                Log.Information("Starting controller Addresses action AddAddress.");
-                var address = await _mediator
-                    .Send(new CreateAddressCommand
-                    {
-                        Address = addressDto
-                    });
-
-                await cache.EvictByTagAsync("Addresses", cancellationToken);
-
-                Log.Information("Address has been added.");
-                return Created(address);
-            }
-            catch (FluentValidation.ValidationException vex)
-            {
-                StringBuilder message = new StringBuilder();
-                foreach (var error in vex.Errors)
+            Log.Information("Starting controller Addresses action AddAddress.");
+            var address = await _mediator
+                .Send(new CreateAddressCommand
                 {
-                    message.AppendLine(error.ErrorMessage);
-                }
-                Log.Error($"{message}");
-                return StatusCode(500, $"An error occurred: {message}");
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is ValidationException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+                    Address = addressDto
+                });
+
+            await cache.EvictByTagAsync("Addresses", cancellationToken);
+
+            Log.Information("Address has been added.");
+            return Created(address);
         }
         #endregion
 
@@ -120,40 +70,21 @@
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateAddress(int key, [FromBody] AddressDto addressDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
-            try
-            {
-                Log.Information("Starting controller Addresses action UpdateAddress.");
-                var currentAddress = await _mediator
-                    .Send(new UpdateAddressCommand
-                    {
-                        Id = key,
-                        Address = addressDto
-                    });
-
-                if (currentAddress == null)
-                    return NotFound("Address not found!");
-
-                await cache.EvictByTagAsync("Addresses", cancellationToken);
-
-                Log.Information($"Address with id: {key} has been updated.");
-                return NoContent();
-            }
-            catch (FluentValidation.ValidationException vex)
-            {
-                StringBuilder message = new StringBuilder();
-                foreach (var error in vex.Errors)
+            Log.Information("Starting controller Addresses action UpdateAddress.");
+            var currentAddress = await _mediator
+                .Send(new UpdateAddressCommand
                 {
-                    message.AppendLine(error.ErrorMessage);
-                }
-                Log.Error($"{message}");
-                return StatusCode(500, $"An error occurred: {message}");
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+                    Id = key,
+                    Address = addressDto
+                });
+
+            if (currentAddress == null)
+                return NotFound("Address not found!");
+
+            await cache.EvictByTagAsync("Addresses", cancellationToken);
+
+            Log.Information($"Address with id: {key} has been updated.");
+            return NoContent();
         }
         #endregion
 
@@ -162,37 +93,18 @@
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> RemoveAddress(int key, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
-            try
-            {
-                Log.Information("Starting controller Addresses action RemoveAddress.");
+            Log.Information("Starting controller Addresses action RemoveAddress.");
 
-                var currentAddress = await _mediator
-                    .Send(new DeleteAddressCommand { Id = key });
+            var currentAddress = await _mediator
+                .Send(new DeleteAddressCommand { Id = key });
 
-                if (currentAddress is false)
-                    return NotFound("Address not found!");
+            if (currentAddress is false)
+                return NotFound("Address not found!");
 
-                await cache.EvictByTagAsync("Addresses", cancellationToken);
+            await cache.EvictByTagAsync("Addresses", cancellationToken);
 
-                Log.Information($"Address with id: {key} has been marked as deleted.");
-                return NoContent();
-            }
-            catch (FluentValidation.ValidationException vex)
-            {
-                StringBuilder message = new StringBuilder();
-                foreach (var error in vex.Errors)
-                {
-                    message.AppendLine(error.ErrorMessage);
-                }
-                Log.Error($"{message}");
-                return StatusCode(500, $"An error occurred: {message}");
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+            Log.Information($"Address with id: {key} has been marked as deleted.");
+            return NoContent();
         }
         #endregion
     }

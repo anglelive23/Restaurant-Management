@@ -21,20 +21,11 @@
         [ProducesResponseType(200, Type = typeof(IQueryable<Contact>))]
         public async Task<IActionResult> GetAllContacts()
         {
-            try
-            {
-                Log.Information("Starting controller Contacts action GetAllContacts.");
-                var contacts = await _mediator
-                    .Send(new GetContactsListQuery());
-                Log.Information("Returning all Contacts to the caller.");
-                return Ok(contacts);
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+            Log.Information("Starting controller Contacts action GetAllContacts.");
+            var contacts = await _mediator
+                .Send(new GetContactsListQuery());
+            Log.Information("Returning all Contacts to the caller.");
+            return Ok(contacts);
         }
 
         [HttpGet("contacts({key})")]
@@ -43,34 +34,15 @@
         [ProducesResponseType(200, Type = typeof(Contact))]
         public async Task<IActionResult> GetContactById(int key)
         {
-            try
-            {
-                Log.Information("Starting controller Contacts action GetContactById.");
-                var contact = await _mediator
-                    .Send(new GetContactDetailsQuery
-                    {
-                        Id = key
-                    });
-
-                Log.Information("Returning Contacts data to the caller.");
-                return Ok(SingleResult.Create(contact));
-            }
-            catch (FluentValidation.ValidationException vex)
-            {
-                StringBuilder message = new StringBuilder();
-                foreach (var error in vex.Errors)
+            Log.Information("Starting controller Contacts action GetContactById.");
+            var contact = await _mediator
+                .Send(new GetContactDetailsQuery
                 {
-                    message.AppendLine(error.ErrorMessage);
-                }
-                Log.Error($"{message}");
-                return StatusCode(500, $"An error occurred: {message}");
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+                    Id = key
+                });
+
+            Log.Information("Returning Contacts data to the caller.");
+            return Ok(SingleResult.Create(contact));
         }
         #endregion
 
@@ -79,36 +51,17 @@
         [ProducesResponseType(201, Type = typeof(Contact))]
         public async Task<IActionResult> AddContact([FromBody] CreateContactDto contactDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
-            try
-            {
-                Log.Information("Starting controller Contacts action AddContact.");
-                var contact = await _mediator
-                    .Send(new CreateContactCommand
-                    {
-                        ContactDto = contactDto
-                    });
-
-                await cache.EvictByTagAsync("Contacts", cancellationToken);
-
-                Log.Information("Contact has been added.");
-                return Created(contact);
-            }
-            catch (FluentValidation.ValidationException vex)
-            {
-                StringBuilder message = new StringBuilder();
-                foreach (var error in vex.Errors)
+            Log.Information("Starting controller Contacts action AddContact.");
+            var contact = await _mediator
+                .Send(new CreateContactCommand
                 {
-                    message.AppendLine(error.ErrorMessage);
-                }
-                Log.Error($"{message}");
-                return StatusCode(500, $"An error occurred: {message}");
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+                    ContactDto = contactDto
+                });
+
+            await cache.EvictByTagAsync("Contacts", cancellationToken);
+
+            Log.Information("Contact has been added.");
+            return Created(contact);
         }
         #endregion
 
@@ -117,40 +70,21 @@
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateContact(int key, [FromBody] UpdateContactDto updateContactDto, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
-            try
-            {
-                Log.Information("Starting controller Contacts action UpdateContact.");
-                var currentContact = await _mediator
-                    .Send(new UpdateContactCommand
-                    {
-                        Id = key,
-                        ContactDto = updateContactDto
-                    });
-
-                if (currentContact is null)
-                    return NotFound("Contact not found!");
-
-                await cache.EvictByTagAsync("Contacts", cancellationToken);
-
-                Log.Information($"Contact with id: {key} has been updated.");
-                return NoContent();
-            }
-            catch (FluentValidation.ValidationException vex)
-            {
-                StringBuilder message = new StringBuilder();
-                foreach (var error in vex.Errors)
+            Log.Information("Starting controller Contacts action UpdateContact.");
+            var currentContact = await _mediator
+                .Send(new UpdateContactCommand
                 {
-                    message.AppendLine(error.ErrorMessage);
-                }
-                Log.Error($"{message}");
-                return StatusCode(500, $"An error occurred: {message}");
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+                    Id = key,
+                    ContactDto = updateContactDto
+                });
+
+            if (currentContact is null)
+                return NotFound("Contact not found!");
+
+            await cache.EvictByTagAsync("Contacts", cancellationToken);
+
+            Log.Information($"Contact with id: {key} has been updated.");
+            return NoContent();
         }
         #endregion
 
@@ -159,40 +93,21 @@
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> RemoveContact(int key, [FromServices] IOutputCacheStore cache, CancellationToken cancellationToken)
         {
-            try
-            {
-                Log.Information("Starting controller Contacts action RemoveContact.");
+            Log.Information("Starting controller Contacts action RemoveContact.");
 
-                var currentContact = await _mediator
-                    .Send(new DeleteContactCommand
-                    {
-                        Id = key
-                    });
-
-                if (currentContact is false)
-                    return NotFound("Contact not found!");
-
-                await cache.EvictByTagAsync("Contacts", cancellationToken);
-
-                Log.Information($"Contact with id: {key} has been marked as deleted.");
-                return NoContent();
-            }
-            catch (FluentValidation.ValidationException vex)
-            {
-                StringBuilder message = new StringBuilder();
-                foreach (var error in vex.Errors)
+            var currentContact = await _mediator
+                .Send(new DeleteContactCommand
                 {
-                    message.AppendLine(error.ErrorMessage);
-                }
-                Log.Error($"{message}");
-                return StatusCode(500, $"An error occurred: {message}");
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+                    Id = key
+                });
+
+            if (currentContact is false)
+                return NotFound("Contact not found!");
+
+            await cache.EvictByTagAsync("Contacts", cancellationToken);
+
+            Log.Information($"Contact with id: {key} has been marked as deleted.");
+            return NoContent();
         }
         #endregion
     }

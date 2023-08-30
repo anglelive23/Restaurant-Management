@@ -16,20 +16,11 @@
         #region Interface Implementation
         public async Task<IQueryable<Contact>> Handle(GetContactDetailsQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new GetContactDetailsQueryValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var validator = new GetContactDetailsQueryValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var contact = _repo.GetAll(a => a.Id == request.Id && a.IsDeleted == false);
-                return contact;
-            }
-            catch (Exception ex) when (ex is FluentValidation.ValidationException
-                                    || ex is DataFailureException
-                                    || ex is Exception)
-            {
-                throw;
-            }
+            var contact = _repo.GetAll(a => a.Id == request.Id && a.IsDeleted == false);
+            return contact;
         }
         #endregion
     }

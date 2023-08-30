@@ -16,16 +16,8 @@
         #region Interface Implementation
         public async Task<IQueryable<Address>> Handle(GetAddressesListQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var addresses = _repo.GetAll(a => a.IsDeleted == false);
-                return await Task.FromResult(addresses);
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                throw;
-            }
+            var addresses = _repo.GetAll(a => a.IsDeleted == false);
+            return await Task.FromResult(addresses);
         }
         #endregion
     }

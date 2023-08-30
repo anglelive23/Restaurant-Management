@@ -23,23 +23,16 @@
         #region Interface Implementation
         public async Task<Category?> AddCategoryWithImageAsync(CreateCategoryDto categoryDto)
         {
-            try
-            {
-                var imageSaver = await SaveCategoryImageAsync(categoryDto);
+            var imageSaver = await SaveCategoryImageAsync(categoryDto);
 
-                var category = await AddCategoryAsync(new Category
-                {
-                    ImageId = imageSaver.Id,
-                    CreatedBy = categoryDto.CreatedBy,
-                    Name = categoryDto.Name
-                });
-
-                return category;
-            }
-            catch (Exception ex) when (ex is ApplicationException)
+            var category = await AddCategoryAsync(new Category
             {
-                throw;
-            }
+                ImageId = imageSaver.Id,
+                CreatedBy = categoryDto.CreatedBy,
+                Name = categoryDto.Name
+            });
+
+            return category;
         }
 
         public async Task<Category?> UpdateCategoryWithImageAsync(int categoryId, UpdateCategoryDto categoryDto)
@@ -69,11 +62,7 @@
 
         private async Task<Image> SaveCategoryImageAsync(CreateCategoryDto categoryDto)
         {
-            var imageServerSaver = _imageService
-                .SaveImageToServer(categoryDto.Image, "Categories");
-
-            if (!imageServerSaver)
-                throw new ApplicationException("Failed to save image on server!");
+            _imageService.SaveImageToServer(categoryDto.Image, "Categories");
 
             return await _imageRepository
                 .AddImageAsync(new Image { CreatedBy = categoryDto.CreatedBy, Path = categoryDto.Image.FileName });

@@ -16,23 +16,13 @@
         #region Interface Implementation
         public async Task<Recipe?> Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new CreateRecipeCommandValidator();
-                await validator.ValidateAndThrowAsync(request);
+            var validator = new CreateRecipeCommandValidator();
+            await validator.ValidateAndThrowAsync(request);
 
-                var recipe = await _recipeService
-                    .AddRecipeWithImageAsync(request.RecipeDto);
+            var recipe = await _recipeService
+                .AddRecipeWithImageAsync(request.RecipeDto);
 
-                return recipe;
-            }
-            catch (Exception ex) when (ex is FluentValidation.ValidationException
-                                    || ex is DataFailureException
-                                    || ex is ApplicationException
-                                    || ex is Exception)
-            {
-                throw;
-            }
+            return recipe;
         }
         #endregion
     }
