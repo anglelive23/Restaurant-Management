@@ -57,3 +57,8 @@ global using RestaurantManagement.Application.Features.Locations.Commands.Delete
 global using RestaurantManagement.Application.Features.Locations.Commands.UpdateLocation;
 global using RestaurantManagement.Application.Features.Locations.Queries.GetLocationDetails;
 global using RestaurantManagement.Application.Features.Locations.Queries.GetLocationsList;
+global using RestaurantManagement.Application.Features.Statuses.Commands.CreateStatus;
+global using RestaurantManagement.Application.Features.Statuses.Commands.DeleteStatus;
+global using RestaurantManagement.Application.Features.Statuses.Commands.UpdateStatus;
+global using RestaurantManagement.Application.Features.Statuses.Queries.GetStatusDetails;
+global using RestaurantManagement.Application.Features.Statuses.Queries.GetStatusesList;
