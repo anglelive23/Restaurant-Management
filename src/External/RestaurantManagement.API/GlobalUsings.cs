@@ -52,3 +52,8 @@ global using RestaurantManagement.Application.Features.Recipes.Commands.DeleteRe
 global using RestaurantManagement.Application.Features.Recipes.Commands.UpdateRecipe;
 global using RestaurantManagement.Application.Features.Recipes.Commands.UpdateRecipeAddon;
 global using RestaurantManagement.Application.Features.Recipes.Commands.UpdateRecipeSize;
+global using RestaurantManagement.Application.Features.Locations.Commands.CreateLocation;
+global using RestaurantManagement.Application.Features.Locations.Commands.DeleteLocation;
+global using RestaurantManagement.Application.Features.Locations.Commands.UpdateLocation;
+global using RestaurantManagement.Application.Features.Locations.Queries.GetLocationDetails;
+global using RestaurantManagement.Application.Features.Locations.Queries.GetLocationsList;

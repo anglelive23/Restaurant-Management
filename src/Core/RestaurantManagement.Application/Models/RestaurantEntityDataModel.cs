@@ -11,6 +11,7 @@
             builder.EntitySet<Category>("Categories");
             builder.EntitySet<Contact>("Contacts");
             builder.EntitySet<Recipe>("Recipes");
+            builder.EntitySet<Location>("Locations");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
