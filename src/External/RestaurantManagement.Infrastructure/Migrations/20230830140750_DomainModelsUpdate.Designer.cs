@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantManagement.Infrastructure;
 
@@ -11,9 +12,11 @@ using RestaurantManagement.Infrastructure;
 namespace RestaurantManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20230830140750_DomainModelsUpdate")]
+    partial class DomainModelsUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,7 +204,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Addons", (string)null);
+                    b.ToTable("Addons");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.Address", b =>
@@ -255,7 +258,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.ApplicationUser", b =>
@@ -383,7 +386,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.Contact", b =>
@@ -444,7 +447,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contacts", (string)null);
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.Image", b =>
@@ -483,7 +486,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.Location", b =>
@@ -538,7 +541,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.Recipe", b =>
@@ -608,7 +611,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Recipes", (string)null);
+                    b.ToTable("Recipes");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.RefreshToken", b =>
@@ -696,7 +699,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("SalesHeaders", (string)null);
+                    b.ToTable("SalesHeaders");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.SalesLine", b =>
@@ -763,7 +766,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasIndex("SalesHeaderId");
 
-                    b.ToTable("SalesLines", (string)null);
+                    b.ToTable("SalesLines");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.Size", b =>
@@ -812,7 +815,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Sizes", (string)null);
+                    b.ToTable("Sizes");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.Status", b =>
@@ -852,7 +855,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Statuses", (string)null);
+                    b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("RestaurantManagement.Domain.Entities.Table", b =>
@@ -895,7 +898,7 @@ namespace RestaurantManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tables", (string)null);
+                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
