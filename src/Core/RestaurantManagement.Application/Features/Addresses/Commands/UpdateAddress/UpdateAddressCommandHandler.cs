@@ -16,20 +16,11 @@
         #region Interface Implementation
         public async Task<Address?> Handle(UpdateAddressCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new UpdateAddressCommandValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var validator = new UpdateAddressCommandValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkUpdate = await _repo.UpdateAddressAsync(request.Id, request.Address.Adapt<Address>());
-                return checkUpdate;
-            }
-            catch (Exception ex) when (ex is FluentValidation.ValidationException
-                                    || ex is DataFailureException)
-            {
-                throw;
-            }
-
+            var checkUpdate = await _repo.UpdateAddressAsync(request.Id, request.Address.Adapt<Address>());
+            return checkUpdate;
         }
         #endregion
     }

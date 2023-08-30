@@ -16,21 +16,11 @@
         #region Interface Implementation
         public async Task<bool> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new DeleteContactCommandValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var validator = new DeleteContactCommandValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkDelete = await _repo.RemoveContactAsync(request.Id);
-                return checkDelete;
-            }
-            catch (Exception ex) when (ex is FluentValidation.ValidationException
-                                    || ex is DataFailureException
-                                    || ex is Exception)
-            {
-
-                throw;
-            }
+            var checkDelete = await _repo.RemoveContactAsync(request.Id);
+            return checkDelete;
         }
         #endregion
     }

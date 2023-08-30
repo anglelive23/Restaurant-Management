@@ -1,3 +1,5 @@
+using RestaurantManagement.API.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddOData(options =>
@@ -51,5 +53,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors(cors => cors.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 app.MapControllers();
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.UseOutputCache();
 app.Run();

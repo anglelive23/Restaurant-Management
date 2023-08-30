@@ -26,9 +26,9 @@
                 file.CopyTo(stream);
                 return true;
             }
-            catch (Exception ex) when (ex is IOException)
+            catch (IOException)
             {
-                throw new IOException($"An error happened when trying to save the image: {ex.InnerException.Message ?? ex.Message}");
+                throw;
             }
         }
 
@@ -47,9 +47,9 @@
                 using var stream = new FileStream(outputPath, FileMode.Create);
                 file.CopyTo(stream);
             }
-            catch (Exception ex) when (ex is IOException)
+            catch (IOException)
             {
-                throw new IOException($"An error happened when trying to save the image: {ex.InnerException.Message ?? ex.Message}");
+                throw;
             }
         }
     }

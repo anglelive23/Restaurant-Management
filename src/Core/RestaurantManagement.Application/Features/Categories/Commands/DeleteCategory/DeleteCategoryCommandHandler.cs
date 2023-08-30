@@ -16,21 +16,11 @@
         #region Interface Implementation
         public async Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new DeleteCategoryCommandValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var validator = new DeleteCategoryCommandValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkDelete = await _repo.RemoveCategoryAsync(request.Id);
-                return checkDelete;
-            }
-            catch (Exception ex) when (ex is FluentValidation.ValidationException
-                                    || ex is DataFailureException
-                                    || ex is Exception)
-            {
-
-                throw;
-            }
+            var checkDelete = await _repo.RemoveCategoryAsync(request.Id);
+            return checkDelete;
         }
         #endregion
     }

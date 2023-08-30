@@ -16,20 +16,11 @@
         #region Interface Implementation
         public async Task<bool> Handle(DeleteRecipeCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var validator = new DeleteRecipeCommandValidator();
-                await validator.ValidateAndThrowAsync(request, cancellationToken);
+            var validator = new DeleteRecipeCommandValidator();
+            await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-                var checkDelete = await _repo.RemoveRecipeAsync(request.Id);
-                return checkDelete;
-            }
-            catch (Exception ex) when (ex is FluentValidation.ValidationException
-                                    || ex is DataFailureException
-                                    || ex is Exception)
-            {
-                throw;
-            }
+            var checkDelete = await _repo.RemoveRecipeAsync(request.Id);
+            return checkDelete;
         }
         #endregion
     }

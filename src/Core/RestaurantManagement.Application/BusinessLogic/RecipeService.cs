@@ -23,31 +23,22 @@
         #region Interface Implementation
         public async Task<Recipe?> AddRecipeWithImageAsync(CreateRecipeDto recipeDto)
         {
-            try
-            {
-                var imageSaver = await SaveRecipeImageAsync(recipeDto.Image, recipeDto.CreatedBy);
+            var imageSaver = await SaveRecipeImageAsync(recipeDto.Image, recipeDto.CreatedBy);
 
-                var recipe = await AddRecipeAsync(new Recipe
-                {
-                    Name = recipeDto.Name,
-                    Description = recipeDto.Description,
-                    InitialPrice = recipeDto.InitialPrice,
-                    Rate = recipeDto.Rate,
-                    Discount = recipeDto.Discount,
-                    ImageId = imageSaver.Id,
-                    CategoryId = recipeDto.CategoryId,
-                    IsOffer = recipeDto.IsOffer,
-                    CreatedBy = recipeDto.CreatedBy
-                });
-
-                return recipe;
-            }
-            catch (Exception ex) when (ex is ApplicationException
-                                    || ex is DataFailureException
-                                    || ex is Exception)
+            var recipe = await AddRecipeAsync(new Recipe
             {
-                throw;
-            }
+                Name = recipeDto.Name,
+                Description = recipeDto.Description,
+                InitialPrice = recipeDto.InitialPrice,
+                Rate = recipeDto.Rate,
+                Discount = recipeDto.Discount,
+                ImageId = imageSaver.Id,
+                CategoryId = recipeDto.CategoryId,
+                IsOffer = recipeDto.IsOffer,
+                CreatedBy = recipeDto.CreatedBy
+            });
+
+            return recipe;
         }
 
         public async Task<Recipe?> UpdateRecipeWithImageAsync(int recipeId, UpdateRecipeDto recipeDto)
@@ -79,23 +70,12 @@
         #region Helper Methods
         private async Task<Recipe?> AddRecipeAsync(Recipe recipe)
         {
-            try
-            {
-                return await _recipeRepository.AddRecipeAsync(recipe);
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                throw;
-            }
+            return await _recipeRepository.AddRecipeAsync(recipe);
         }
 
         private async Task<Image> SaveRecipeImageAsync(IFormFile image, string createdBy)
         {
-            var imageServerSaver = _imageService.SaveImageToServer(image, "Recipes");
-
-            if (!imageServerSaver)
-                throw new ApplicationException("Image saving to server failed!");
+            _imageService.SaveImageToServer(image, "Recipes");
 
             return await _imageRepository
                 .AddImageAsync(new Image { Path = image.FileName, CreatedBy = createdBy });
