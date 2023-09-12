@@ -17,6 +17,7 @@ global using RestaurantManagement.Application.Models;
 global using Microsoft.Extensions.DependencyInjection;
 global using RestaurantManagement.Application.Exceptions;
 global using RestaurantManagement.Infrastructure.Services;
+global using RestaurantManagement.Application.Models.Dtos;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using RestaurantManagement.Application.Abstractions;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;

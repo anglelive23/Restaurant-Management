@@ -50,34 +50,15 @@
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IQueryable<Size>))]
         public async Task<IActionResult> GetAllSizesForRecipes(int key)
         {
-            try
-            {
-                Log.Information("Starting controller Recipes action GetAllSizesForRecipes.");
-                var sizes = await _mediator
-                    .Send(new GetRecipeSizesListQuery
-                    {
-                        Id = key
-                    });
-
-                Log.Information($"Returning all recipe: {key} sizes to the caller.");
-                return Ok(sizes);
-            }
-            catch (FluentValidation.ValidationException vex)
-            {
-                StringBuilder message = new StringBuilder();
-                foreach (var error in vex.Errors)
+            Log.Information("Starting controller Recipes action GetAllSizesForRecipes.");
+            var sizes = await _mediator
+                .Send(new GetRecipeSizesListQuery
                 {
-                    message.AppendLine(error.ErrorMessage);
-                }
-                Log.Error($"{message}");
-                return StatusCode(500, $"An error occurred: {message}");
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+                    Id = key
+                });
+
+            Log.Information($"Returning all recipe: {key} sizes to the caller.");
+            return Ok(sizes);
         }
 
         [HttpGet("recipes({key})/addons")]
@@ -85,34 +66,15 @@
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IQueryable<Addon>))]
         public async Task<IActionResult> GetAllAddonsForRecipes(int key)
         {
-            try
-            {
-                Log.Information("Starting controller Recipes action GetAllAddonsForRecipes.");
-                var addons = await _mediator
-                    .Send(new GetRecipeAddonsListQuery
-                    {
-                        Id = key
-                    });
-
-                Log.Information($"Returning all recipe: {key} addons to the caller.");
-                return Ok(addons);
-            }
-            catch (FluentValidation.ValidationException vex)
-            {
-                StringBuilder message = new StringBuilder();
-                foreach (var error in vex.Errors)
+            Log.Information("Starting controller Recipes action GetAllAddonsForRecipes.");
+            var addons = await _mediator
+                .Send(new GetRecipeAddonsListQuery
                 {
-                    message.AppendLine(error.ErrorMessage);
-                }
-                Log.Error($"{message}");
-                return StatusCode(500, $"An error occurred: {message}");
-            }
-            catch (Exception ex) when (ex is DataFailureException
-                                    || ex is Exception)
-            {
-                Log.Error($"{ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
+                    Id = key
+                });
+
+            Log.Information($"Returning all recipe: {key} addons to the caller.");
+            return Ok(addons);
         }
         #endregion
 

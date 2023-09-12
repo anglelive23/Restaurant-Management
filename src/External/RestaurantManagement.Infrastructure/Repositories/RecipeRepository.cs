@@ -12,7 +12,8 @@
             try
             {
                 IQueryable<Size> sizes = _context
-                    .Sizes;
+                    .Sizes
+                    .Where(s => s.RecipeId == recipeId);
 
                 if (predicate is not null)
                     sizes = sizes.Where(predicate);
@@ -32,7 +33,8 @@
             try
             {
                 IQueryable<Addon> addons = _context
-                    .Addons;
+                    .Addons
+                    .Where(a => a.RecipeId == recipeId);
 
                 if (predicate is not null)
                     addons = addons.Where(predicate);

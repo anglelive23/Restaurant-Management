@@ -62,3 +62,9 @@ global using RestaurantManagement.Application.Features.Statuses.Commands.DeleteS
 global using RestaurantManagement.Application.Features.Statuses.Commands.UpdateStatus;
 global using RestaurantManagement.Application.Features.Statuses.Queries.GetStatusDetails;
 global using RestaurantManagement.Application.Features.Statuses.Queries.GetStatusesList;
+global using RestaurantManagement.Application.Features.Sales.Commands.CreateSalesHeader;
+global using RestaurantManagement.Application.Features.Sales.Commands.DeleteSalesHeader;
+global using RestaurantManagement.Application.Features.Sales.Queries.GetSalesHeaderDetails;
+global using RestaurantManagement.Application.Features.Sales.Queries.GetSalesHeaderList;
+global using RestaurantManagement.Application.Features.Sales.Queries.GetSalesHeaderSalesLinesList;
+global using RestaurantManagement.Application.Features.Sales.Commands.UpdateSalesHeader;
