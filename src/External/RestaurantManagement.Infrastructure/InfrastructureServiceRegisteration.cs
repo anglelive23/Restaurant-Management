@@ -19,6 +19,8 @@
             services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IStatusRepository, StatusRepository>();
+            services.AddScoped<ITableRepository, TableRepository>();
+            services.AddScoped<ISalesRepository, SalesRepository>();
             #endregion
 
             #region JWT
