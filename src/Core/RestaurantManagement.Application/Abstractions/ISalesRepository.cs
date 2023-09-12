@@ -3,7 +3,7 @@
     public interface ISalesRepository : IAsyncRepository<SalesHeader>
     {
         #region POST
-        Task<SalesHeader?> AddSalesHeaderAsync(SalesHeader salesHeader);
+        Task<SalesHeader> AddSalesHeaderAsync(SalesHeader salesHeader);
         #endregion
 
         #region PUT

@@ -75,6 +75,20 @@
                         });
                     }
 
+                case NotFoundException NotFoundException:
+                    {
+                        var message = NotFoundException.InnerException != null ? NotFoundException.InnerException.Message : NotFoundException.Message;
+                        Log.ForContext("NotFoundException", message)
+                            .Error($"NotFoundException with code: {errorCode} occurred in Application Layer, Contact system admin with ErrorCode.");
+                        context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                        return context.Response.WriteAsJsonAsync(new
+                        {
+                            ErrorCode = errorCode,
+                            Message = $"NotFoundException with code: {errorCode} occurred in Application Layer, Contact system admin with ErrorCode.",
+                            ErrorMessage = message
+                        });
+                    }
+
                 case IOException iOException:
                     {
                         var message = iOException.InnerException != null ? iOException.InnerException.Message : iOException.Message;

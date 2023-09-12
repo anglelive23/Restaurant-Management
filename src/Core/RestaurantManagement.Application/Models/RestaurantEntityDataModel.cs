@@ -13,6 +13,8 @@
             builder.EntitySet<Recipe>("Recipes");
             builder.EntitySet<Location>("Locations");
             builder.EntitySet<Status>("Statuses");
+            builder.EntitySet<Table>("Tables");
+            builder.EntitySet<SalesHeader>("SalesOrders");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

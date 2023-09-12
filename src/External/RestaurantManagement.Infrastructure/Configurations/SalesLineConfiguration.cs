@@ -6,14 +6,7 @@
         {
             builder.HasKey(s => s.Id);
 
-            builder.Property(s => s.SalesPrice)
-                .IsRequired()
-                .HasPrecision(18, 2);
-
-            builder.Property(s => s.Size)
-                .IsRequired();
-
-            builder.Property(s => s.Addons)
+            builder.Property(s => s.SizeId)
                 .IsRequired();
 
             builder.Property(s => s.Note)
